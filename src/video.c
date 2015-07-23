@@ -2,6 +2,7 @@
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
+#include  "projectile.h"
 
 #include <stdio.h>
 #include <SDL/SDL.h>
@@ -56,9 +57,32 @@ void refreshGraphics() {
 	tile.y = 15;
 	tile.h = 15;
 
+
+
 	healthIndicator = villainTrain.basicTrainProps.hull;
 
+	if ( villainTrain.basicTrainProps.hit) {
+	  healthIndicator = 0;
+	}
+
 	SDL_FillRect( video, &tile, 0xFF000000 + (healthIndicator * 0xFFFF ) );
+
+	int slot;
+	Projectile *bullet;
+
+	for ( slot = 0; slot < MAX_BULLETS; ++slot ){ 
+	  
+	  bullet = bullets[ slot ];
+
+	  if ( bullet != NULL ) {
+	    tile.x = bullet->x;
+	    tile.y = bullet->y;
+	    tile.w = 5;
+	    tile.h = 5;
+	    
+	    SDL_FillRect( video, &tile, 0 );
+	  }
+	}
 
 	SDL_Flip( video );
 }
@@ -75,6 +99,10 @@ void handleEvents() {
 
 		if ( events.key.keysym.sym == SDLK_LEFT ) {
 			heroTrain.basicTrainProps.position -= 16;
+		}
+
+		if ( events.key.keysym.sym == SDLK_SPACE ) {
+		  shoot();
 		}
 
 		if ( events.key.keysym.sym == SDLK_RIGHT ) {

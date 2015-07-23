@@ -6,6 +6,7 @@ typedef struct {
   int position;
   int hull;
   int length;
+  int hit;
 } Train;
 
 #endif
