@@ -19,11 +19,32 @@ int availableBullets = MAX_BULLETS;
 int mapPos = 0;
 int quit = 0;
 
+
+int ccl;
+
+void initCar( Car* car ) {
+  car->hull = 255;
+  car->hit = 0;
+  car->length = 30;
+  car->position = 5 + ccl;
+  ccl = car->position + car->length;
+}
+
 void initTrain( Train* train ) {
+
+  ccl = 0;
+
 	train->position = 0;
 	train->hull = 255;
 	train->speed = 255;
 	train->hit = 0;
+	train->carsCount = 3;
+	train->cars = (Car*) malloc( train->carsCount * sizeof( Car ) );
+
+	int car;
+	for ( car = 0; car < train->carsCount; ++car ) {
+	  initCar( &train->cars[ car ] );
+	}
 }
 
 void initTrains() {
@@ -34,7 +55,7 @@ void initTrains() {
 	villainTrain.basicTrainProps.length = 1000;
 }	
 
-void shoot() {
+void fireBullet( int car ) {
 
   int slot;
   Projectile *bullet;
@@ -51,7 +72,7 @@ void shoot() {
 
     availableBullets--;
     bullet = (Projectile*)malloc(  sizeof( Projectile ) );
-    bullet->x = heroTrain.basicTrainProps.position;
+    bullet->x = heroTrain.basicTrainProps.position + heroTrain.basicTrainProps.cars[ car ].position;
     bullet->y = 150;
     bullet->speedY -= 1;
     bullet->speedX = 1;
@@ -62,11 +83,17 @@ void shoot() {
 }
 
 
-int isHit( Train* train, Projectile *bullet ) {
+void shoot() {
+  fireBullet( 0 );
+  fireBullet( 1 );
+  fireBullet( 2 );
+}
+
+int isHit( int pos, Car* car, Projectile *bullet ) {
   
   if ( bullet != NULL ) {
   
-    if ( bullet->y > 15 && bullet->y < 30 && bullet->x > villainTrain.basicTrainProps.position && bullet->x < ( villainTrain.basicTrainProps.position + villainTrain.basicTrainProps.length ) ) {
+    if ( bullet->y > 15 && bullet->y < 30 && bullet->x > ( car->position + pos ) && bullet->x < ( car->position + car->length + pos ) ) {
       return 1;
     }
   }
@@ -96,6 +123,7 @@ updateGame() {
 
   int slot;
   Projectile *bullet;
+  int car;
 
   for ( slot = 0; slot < MAX_BULLETS; ++slot ) {
     if ( bullets[ slot ] != NULL ) {  
@@ -104,11 +132,16 @@ updateGame() {
       bullet->x += bullet->speedX;
       bullet->y += bullet->speedY;
 
-      if ( isHit( &villainTrain.basicTrainProps, bullet ) ) {
-	villainTrain.basicTrainProps.hit = 1;
-	villainTrain.basicTrainProps.hull -= 1;
-	destroyBullet( bullet );
+      for ( car = 0; car < villainTrain.basicTrainProps.carsCount; ++car ){
+
+	if ( isHit( villainTrain.basicTrainProps.position, &villainTrain.basicTrainProps.cars[ car ], bullet ) ) {
+	  villainTrain.basicTrainProps.cars[ car ].hit = 1;
+	  villainTrain.basicTrainProps.cars[ car ].hull -= 1;
+	  destroyBullet( bullet );
+      }      
+
       }
+
     }    
   }
 
