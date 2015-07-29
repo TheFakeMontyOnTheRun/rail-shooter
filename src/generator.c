@@ -19,43 +19,39 @@ int availableBullets = MAX_BULLETS;
 int mapPos = 0;
 int quit = 0;
 
-
-int ccl;
-
-void initCar( Car* car ) {
+void initCar( Car* car, int position ) {
   car->hull = 255;
   car->hit = 0;
   car->length = 30;
-  car->position = 5 + ccl;
-  ccl = car->position + car->length;
+  car->position = 5 + position;
 }
 
-void initTrain( Train* train ) {
+void initTrain( Train* train, int cars ) {
 
-  ccl = 0;
+  train->position = 0;
+  train->speed = 255;
+  train->carsCount = cars;
+  train->cars = (Car*) malloc( train->carsCount * sizeof( Car ) );
 
-	train->position = 0;
-	train->hull = 255;
-	train->speed = 255;
-	train->hit = 0;
-	train->carsCount = 3;
-	train->cars = (Car*) malloc( train->carsCount * sizeof( Car ) );
+  int car;
+  int lastPosition = 0;
 
-	int car;
-	for ( car = 0; car < train->carsCount; ++car ) {
-	  initCar( &train->cars[ car ] );
-	}
+  for ( car = 0; car < train->carsCount; ++car ) {
+    initCar( &train->cars[ car ], lastPosition );
+    lastPosition = train->cars[ car ].position + train->cars[ car ].length;
+  }
 }
 
 void initTrains() {
-	initTrain( & heroTrain.basicTrainProps );
-	heroTrain.crew = 1;
-	heroTrain.basicTrainProps.length = 30;
-	initTrain( & villainTrain.basicTrainProps );
-	villainTrain.basicTrainProps.length = 1000;
+
+  initTrain( & heroTrain.basicTrainProps, 4 );
+  heroTrain.crew = 1;
+  heroTrain.basicTrainProps.length = 30;
+  initTrain( & villainTrain.basicTrainProps, 7 );
+  villainTrain.basicTrainProps.length = villainTrain.basicTrainProps.cars[ 2 ].position + villainTrain.basicTrainProps.cars[ 2 ].length;
 }	
 
-void fireBullet( int car ) {
+void fireBullet( int xPos, int yPos, int xSpeed, int ySpeed ) {
 
   int slot;
   Projectile *bullet;
@@ -72,28 +68,30 @@ void fireBullet( int car ) {
 
     availableBullets--;
     bullet = (Projectile*)malloc(  sizeof( Projectile ) );
-    bullet->x = heroTrain.basicTrainProps.position + heroTrain.basicTrainProps.cars[ car ].position;
-    bullet->y = 150;
-    bullet->speedY -= 1;
-    bullet->speedX = 1;
+    bullet->x = xPos;
+    bullet->y = yPos;
+    bullet->speedY = ySpeed;
+    bullet->speedX = xSpeed;
     bullet->kind = 1;
     bullets[ slot ] = bullet;
+
     return;
   }
 }
 
 
 void shoot() {
-  fireBullet( 0 );
-  fireBullet( 1 );
-  fireBullet( 2 );
+  int car;
+  for ( car = 0; car < heroTrain.basicTrainProps.carsCount; ++car ) {
+    fireBullet( heroTrain.basicTrainProps.position + heroTrain.basicTrainProps.cars[ car ].position, 150, 1, -1 );
+  }
 }
 
-int isHit( int pos, Car* car, Projectile *bullet ) {
+int isHit( int pos, int line,  Car* car, Projectile *bullet ) {
   
   if ( bullet != NULL ) {
   
-    if ( bullet->y > 15 && bullet->y < 30 && bullet->x > ( car->position + pos ) && bullet->x < ( car->position + car->length + pos ) ) {
+    if ( bullet->y > line && bullet->y < ( line + 15 ) && bullet->x > ( car->position + pos ) && bullet->x < ( car->position + car->length + pos ) ) {
       return 1;
     }
   }
@@ -115,12 +113,6 @@ void destroyBullet( Projectile *bullet ) {
 
 updateGame() {
 
-  villainTrain.basicTrainProps.hit = 0;
-
-  if ( villainTrain.basicTrainProps.hull <= 0 ) {
-    quit = 1;
-  }
-
   int slot;
   Projectile *bullet;
   int car;
@@ -132,23 +124,45 @@ updateGame() {
       bullet->x += bullet->speedX;
       bullet->y += bullet->speedY;
 
+      if ( bullet->y < 0 ) {
+	destroyBullet( bullet );
+	continue;
+      }
+
+      if ( bullet->y >= 192 ) {
+	destroyBullet( bullet );
+	continue;
+      }
+
       for ( car = 0; car < villainTrain.basicTrainProps.carsCount; ++car ){
 
-	if ( isHit( villainTrain.basicTrainProps.position, &villainTrain.basicTrainProps.cars[ car ], bullet ) ) {
+	if ( isHit( villainTrain.basicTrainProps.position, 15, &villainTrain.basicTrainProps.cars[ car ], bullet ) ) {
 	  villainTrain.basicTrainProps.cars[ car ].hit = 1;
 	  villainTrain.basicTrainProps.cars[ car ].hull -= 1;
 	  destroyBullet( bullet );
-      }      
-
+	  fireBullet( villainTrain.basicTrainProps.position + villainTrain.basicTrainProps.cars[ car ].position, 35, -1, 1 );
+	  goto nextBullet;
+	}      
       }
 
+      for ( car = 0; car < heroTrain.basicTrainProps.carsCount; ++car ){
+
+	if ( isHit( heroTrain.basicTrainProps.position, 150, &heroTrain.basicTrainProps.cars[ car ], bullet ) ) {
+	  heroTrain.basicTrainProps.cars[ car ].hit = 1;
+	  heroTrain.basicTrainProps.cars[ car ].hull -= 1;
+	  destroyBullet( bullet );
+	}      
+      }
     }    
+  nextBullet:
+    bullet = bullet; /* noop */
   }
+
 
   if (  villainTrain.basicTrainProps.speed == 0 ) {
     villainTrain.basicTrainProps.position--;
 
-    if ( villainTrain.basicTrainProps.position == -255 -villainTrain.basicTrainProps.length ) {
+    if ( villainTrain.basicTrainProps.position == -villainTrain.basicTrainProps.length ) {
       villainTrain.basicTrainProps.speed = 8;
     }
   } else {
@@ -163,25 +177,26 @@ updateGame() {
 
 int main( int argc, char **argv ) {
 
-	initGraphics();
-	initGroundTypes();
-	initTrains();
+  initGraphics();
+  initGroundTypes();
+  initTrains();
 
-	quit = 0;
+  quit = 0;
 
-	while( !quit ) {
+  while( !quit ) {
 
-		handleEvents();
+    handleEvents();
 		
-		++mapPos;
-		updateTerrain( mapPos );
-		updateGame();
+    ++mapPos;
+    updateTerrain( mapPos );
+    updateGame();
 
-		if ( mapPos > 8 ) {
-			refreshGraphics();
-		}
-	}
+    usleep( 500 );
+    if ( mapPos > 8 ) {
+      refreshGraphics();
+    }
+  }
 
-	shutdownGraphics();
-	return 0;
+  shutdownGraphics();
+  return 0;
 }

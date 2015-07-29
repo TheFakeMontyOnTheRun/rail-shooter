@@ -11,9 +11,7 @@ typedef struct {
 typedef struct {
   int speed;
   int position;
-  int hull;
   int length;
-  int hit;
   int carsCount;
   Car* cars;
 } Train;

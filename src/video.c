@@ -67,6 +67,7 @@ void drawTrain( int carCount, Car *cars, int pos, int line ) {
 
     if ( cars[ c ].hit ) {
       healthIndicator = 0;
+      cars[ c ].hit = 0;
     }
 
     SDL_FillRect( video, &tile, 0xFF000000 + (healthIndicator * 0xFFFF ) );

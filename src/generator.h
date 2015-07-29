@@ -1,7 +1,7 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H
 
-#define MAX_BULLETS 20
+#define MAX_BULLETS 120
 
 extern HeroTrain heroTrain;
 extern VillainTrain villainTrain;
