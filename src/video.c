@@ -18,7 +18,7 @@ void initGraphics() {
     printf( "Erro de SDL..." );
     exit( -1 );
   }
-  video = SDL_SetVideoMode( 255, 192, 16, 0 );
+  video = SDL_SetVideoMode( 255, 192, 32, 0 );
 }
 
 void drawBackground(){
