@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "video.h"
 #include "background.h" 
@@ -20,7 +21,7 @@ int mapPos = 0;
 int quit = 0;
 
 void initCar( Car* car, int position ) {
-  car->hull = 255;
+  car->hull = 32;
   car->hit = 0;
   car->length = 30;
   car->position = 5 + position;
@@ -136,6 +137,10 @@ updateGame() {
 
       for ( car = 0; car < villainTrain.basicTrainProps.carsCount; ++car ){
 
+	if ( villainTrain.basicTrainProps.cars[ car ].hull <= 0 ) {
+	  continue;
+	}
+
 	if ( isHit( villainTrain.basicTrainProps.position, 15, &villainTrain.basicTrainProps.cars[ car ], bullet ) ) {
 	  villainTrain.basicTrainProps.cars[ car ].hit = 1;
 	  villainTrain.basicTrainProps.cars[ car ].hull -= 1;
@@ -146,6 +151,10 @@ updateGame() {
       }
 
       for ( car = 0; car < heroTrain.basicTrainProps.carsCount; ++car ){
+
+	if ( heroTrain.basicTrainProps.cars[ car ].hull <= 0 ) {
+	  continue;
+	}
 
 	if ( isHit( heroTrain.basicTrainProps.position, 150, &heroTrain.basicTrainProps.cars[ car ], bullet ) ) {
 	  heroTrain.basicTrainProps.cars[ car ].hit = 1;
@@ -183,7 +192,13 @@ int main( int argc, char **argv ) {
 
   quit = 0;
 
+  struct timeval timeBefore;
+  struct timeval timeAfter;
+  struct timeval timeResult;
+
+
   while( !quit ) {
+    gettimeofday( &timeBefore, NULL );
 
     handleEvents();
 		
@@ -191,9 +206,15 @@ int main( int argc, char **argv ) {
     updateTerrain( mapPos );
     updateGame();
 
-    usleep( 500 );
     if ( mapPos > 8 ) {
       refreshGraphics();
+    }
+
+    gettimeofday( &timeAfter, NULL );
+    timersub( &timeAfter, &timeBefore, &timeResult );
+
+    if ( timeResult.tv_usec < 10000 ) {
+      usleep( 10000 - timeResult.tv_usec );
     }
   }
 
