@@ -7,7 +7,7 @@ OBJ = src/generator.o src/video.o src/background.o
 TARGET = rails
 
 $(TARGET):	$(OBJ)
-	$(CC) $(SDLFLAGS) -o $(TARGET) $(OBJ)
+	$(CC) -o $(TARGET) $(OBJ) $(SDLFLAGS)
 
 all:	$(TARGET)
 
