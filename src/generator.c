@@ -45,10 +45,10 @@ void initTrain( Train* train, int cars ) {
 
 void initTrains() {
 
-  initTrain( & heroTrain.basicTrainProps, 4 );
+  initTrain( & heroTrain.basicTrainProps, 1 );
   heroTrain.crew = 1;
   heroTrain.basicTrainProps.length = 30;
-  initTrain( & villainTrain.basicTrainProps, 7 );
+  initTrain( & villainTrain.basicTrainProps, 1 );
   villainTrain.basicTrainProps.length = villainTrain.basicTrainProps.cars[ 2 ].position + villainTrain.basicTrainProps.cars[ 2 ].length;
 }	
 
@@ -202,7 +202,7 @@ int main( int argc, char **argv ) {
 
     handleEvents();
 		
-    ++mapPos;
+    mapPos += 8;
     updateTerrain( mapPos );
     updateGame();
 

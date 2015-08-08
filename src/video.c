@@ -6,19 +6,31 @@
 
 #include <stdio.h>
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 
 #include "video.h"
 #include "generator.h"
 #include "background.h" 
 
 SDL_Surface *video;
+SDL_Surface *shot;
+SDL_Surface *player;
+SDL_Surface *zbor;
+SDL_Surface *bg1;
+SDL_Surface *bg2;
 
 void initGraphics() {
+
   if ( SDL_Init( SDL_INIT_VIDEO ) != 0 ) {
     printf( "Erro de SDL..." );
     exit( -1 );
   }
-  video = SDL_SetVideoMode( 255, 192, 32, 0 );
+  video = SDL_SetVideoMode( 255, 192, 16, SDL_HWSURFACE );
+  shot = IMG_Load( "res/misc/shot.png" );
+  player = IMG_Load( "res/player/wagon.png" );
+  zbor = IMG_Load( "res/foes/zbor1.png" );
+  bg1 = IMG_Load( "res/scenary/stage1-floor_all.png" );
+  bg2 = IMG_Load( "res/scenary/stage1-floor_grass.png" );
 }
 
 void drawBackground(){
@@ -28,15 +40,16 @@ void drawBackground(){
   int c;
   int d;
 
-  for ( c = 0; c < 8; ++c ) {
-    for ( d = 0; d < 6; ++d ) {
+  for ( c = 0; c < 5; ++c ) {
+    for ( d = 0; d < 3; ++d ) {
 	
-      tile.x = c * 32;
-      tile.y = d * 32;
-      tile.w = 32;
-      tile.h = 32;
-		     
-      SDL_FillRect( video, &tile, columns[ (c + mapPos ) % 8 ].tiles[ d ]->colour );
+      tile.x = ( c * 64 ) - ( mapPos % 64 );
+      tile.y = d * 64;
+      tile.w = 64;
+      tile.h = 64;
+	
+      SDL_BlitSurface( bg1, NULL, video, &tile );
+      /*      SDL_FillRect( video, &tile, columns[ (c + mapPos ) % 8 ].tiles[ d ]->colour );*/
     }
   }
 }
@@ -45,7 +58,7 @@ void clearGraphics() {
   SDL_FillRect( video, NULL, 0 );
 }
 
-void drawTrain( int carCount, Car *cars, int pos, int line ) {
+void drawTrain( int carCount, Car *cars, int pos, int line, SDL_Surface*asset ) {
 
   SDL_Rect tile;
   int healthIndicator;
@@ -53,7 +66,6 @@ void drawTrain( int carCount, Car *cars, int pos, int line ) {
   int d;
 
   int acc;
-
 
   acc = pos;
 
@@ -69,20 +81,17 @@ void drawTrain( int carCount, Car *cars, int pos, int line ) {
       healthIndicator = 0;
       cars[ c ].hit = 0;
     }
-
-    SDL_FillRect( video, &tile, 0xFF000000 + (healthIndicator * 0xFFFF ) );
+    SDL_BlitSurface( asset, NULL, video, &tile );
   }
-
 }
 
 void refreshGraphics() {
 
   drawBackground();
 
+  drawTrain( villainTrain.basicTrainProps.carsCount, villainTrain.basicTrainProps.cars, villainTrain.basicTrainProps.position, -30, zbor );
 
-  drawTrain( heroTrain.basicTrainProps.carsCount, heroTrain.basicTrainProps.cars, heroTrain.basicTrainProps.position, 150 );
-
-  drawTrain( villainTrain.basicTrainProps.carsCount, villainTrain.basicTrainProps.cars, villainTrain.basicTrainProps.position, 15 );
+  drawTrain( heroTrain.basicTrainProps.carsCount, heroTrain.basicTrainProps.cars, heroTrain.basicTrainProps.position, 100, player );
 
   int slot;
   Projectile *bullet;
@@ -96,14 +105,14 @@ void refreshGraphics() {
     if ( bullet != NULL ) {
       tile.x = bullet->x;
       tile.y = bullet->y;
-      tile.w = 5;
-      tile.h = 5;
-	    
-      SDL_FillRect( video, &tile, 0 );
+      tile.w = 8;
+      tile.h = 8;
+      
+      SDL_BlitSurface( shot, NULL, video, &tile );
     }
   }
 
-  SDL_Flip( video );
+  SDL_UpdateRect( video, 0, 0, 0, 0 );
 }
 
 void handleEvents() {

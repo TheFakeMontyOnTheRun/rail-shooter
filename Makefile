@@ -1,5 +1,5 @@
-SDLFLAGS = `sdl-config --cflags --libs`
-CCFLAGS =  -o2 -std=c99 -g -c -Wall --pedantic
+SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image
+CCFLAGS =  -std=c99 -g -c -Wall --pedantic
 CC = gcc
 
 OBJ = src/generator.o src/video.o src/background.o
