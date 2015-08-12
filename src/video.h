@@ -5,5 +5,5 @@ void initGraphics();
 void refreshGraphics();
 void handleEvents();
 void shutdownGraphics();
-
+void sleepForMS( long ms );
 #endif

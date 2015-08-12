@@ -33,6 +33,10 @@ void initGraphics() {
   bg2 = IMG_Load( "res/scenary/stage1-floor_grass.png" );
 }
 
+void sleepForMS( long ms ) {
+  SDL_Delay( ms );
+}
+
 void drawBackground(){
 
   SDL_Rect tile;
