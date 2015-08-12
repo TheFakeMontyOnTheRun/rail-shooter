@@ -1,13 +1,11 @@
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image
-CCFLAGS =  -std=c99 -g -c -Wall --pedantic
+CCFLAGS =  -O3 -std=c99 -g -Wall --pedantic
 CC = gcc
-
 OBJ = src/generator.o src/video.o src/background.o
-
 TARGET = rails
 
 $(TARGET):	$(OBJ)
-	$(CC) -o $(TARGET) $(OBJ) $(SDLFLAGS)
+	$(CC) $(CCFLAGS) -o$(TARGET) $(OBJ) $(SDLFLAGS)
 
 all:	$(TARGET)
 
