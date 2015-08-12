@@ -112,7 +112,7 @@ void destroyBullet( Projectile *bullet ) {
   }
 }
 
-updateGame() {
+void updateGame() {
 
   int slot;
   Projectile *bullet;
@@ -195,7 +195,8 @@ int main( int argc, char **argv ) {
   struct timeval timeBefore;
   struct timeval timeAfter;
   struct timeval timeResult;
-
+  int slept = 0;
+  long delta;
 
   while( !quit ) {
     gettimeofday( &timeBefore, NULL );
@@ -211,13 +212,19 @@ int main( int argc, char **argv ) {
     }
 
     gettimeofday( &timeAfter, NULL );
-    timersub( &timeAfter, &timeBefore, &timeResult );
+    delta = ( timeAfter.tv_usec - timeBefore.tv_usec ) / 100;
 
-    if ( timeResult.tv_usec < 10000 ) {
-      usleep( 10000 - timeResult.tv_usec );
+    if ( delta < 0 ) {
+      delta = -delta;
+    }
+
+    if ( delta < 50 ) {
+      sleepForMS( 50 - delta ); 
+      slept++;
     }
   }
-
+  
+  printf( "slept for %d frames", slept );
   shutdownGraphics();
   return 0;
 }
