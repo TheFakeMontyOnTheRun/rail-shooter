@@ -5,10 +5,9 @@ typedef struct {
 	GroundType *tiles[ 6 ];
 } Column;
 
-Column columns[ 8 ];
-
-GroundType ice;
-GroundType desert;
+extern Column columns[ 8 ];
+extern GroundType ice;
+extern GroundType desert;
 
 
 void initGroundTypes();

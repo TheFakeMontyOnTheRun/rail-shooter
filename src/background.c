@@ -1,6 +1,12 @@
 #include "GroundType.h" 
 #include "background.h"
 
+
+Column columns[ 8 ];
+GroundType ice;
+GroundType desert;
+
+
 void initGroundTypes() {
   ice.representation = 'O';
   ice.colour = 0xFF55FF55;

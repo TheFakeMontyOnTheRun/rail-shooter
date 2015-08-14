@@ -1,6 +1,6 @@
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image
 CCFLAGS =  -O3 -std=c99 -g -Wall --pedantic
-CC = gcc
+CC = g++
 OBJ = src/generator.o src/video.o src/background.o
 TARGET = rails
 
