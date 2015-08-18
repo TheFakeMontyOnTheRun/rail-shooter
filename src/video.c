@@ -25,7 +25,7 @@ void initGraphics() {
     printf( "Erro de SDL..." );
     exit( -1 );
   }
-  video = SDL_SetVideoMode( 255, 192, 16, SDL_HWSURFACE );
+  video = SDL_SetVideoMode( XRES, YRES, 0, SDL_HWSURFACE );
   shot = IMG_Load( "res/misc/shot.png" );
   player = IMG_Load( "res/player/wagon.png" );
   zbor = IMG_Load( "res/foes/zbor1.png" );
