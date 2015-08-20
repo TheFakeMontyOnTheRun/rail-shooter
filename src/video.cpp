@@ -1,12 +1,13 @@
+#include <stdio.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <vector>
+
 #include "GroundType.h"
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
 #include  "projectile.h"
-
-#include <stdio.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 
 #include "video.h"
 #include "generator.h"
@@ -102,7 +103,7 @@ void refreshGraphics() {
 
   SDL_Rect tile;
 
-  for ( slot = 0; slot < MAX_BULLETS; ++slot ){ 
+  for ( slot = 0; slot < bullets.size(); ++slot ){
 	  
     bullet = bullets[ slot ];
 

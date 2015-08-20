@@ -1,12 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <vector>
+#include <algorithm>
+
 #include "GroundType.h"
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
 #include "projectile.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
 
 #include "video.h"
 #include "background.h" 
@@ -14,9 +16,8 @@
  
 HeroTrain heroTrain;
 VillainTrain villainTrain;
-Projectile *bullets[ MAX_BULLETS ];
+std::vector< Projectile*> bullets;
 
-int availableBullets = MAX_BULLETS;
 int mapPos = 0;
 int quit = 0;
 
@@ -54,30 +55,16 @@ void initTrains() {
 
 void fireBullet( int xPos, int yPos, int xSpeed, int ySpeed ) {
 
-  int slot;
   Projectile *bullet;
 
-  if ( availableBullets == 0 ) {
-    return;
-  }
-
-  for ( slot = 0; slot < MAX_BULLETS; ++slot ) {
-    
-    if( bullets[ slot ] != NULL ) {
-      continue;
-    }
-
-    availableBullets--;
     bullet = (Projectile*)malloc(  sizeof( Projectile ) );
     bullet->x = xPos;
     bullet->y = yPos;
     bullet->speedY = ySpeed;
     bullet->speedX = xSpeed;
     bullet->kind = 1;
-    bullets[ slot ] = bullet;
 
-    return;
-  }
+    bullets.push_back( bullet );
 }
 
 
@@ -101,15 +88,8 @@ int isHit( int pos, int line,  Car* car, Projectile *bullet ) {
 }
 
 void destroyBullet( Projectile *bullet ) {
-  int slot;
-  for ( slot = 0; slot < MAX_BULLETS; ++slot ) {
-    if ( bullets[ slot ] == bullet ) {
-      bullets[ slot ] = NULL;
-      free( bullet );
-      availableBullets++;
-      return;
-    }
-  }
+	bullets.erase( std::remove( bullets.begin(), bullets.end(), bullet ), bullets.end() );
+	free( bullet );
 }
 
 void updateGame() {
@@ -118,7 +98,7 @@ void updateGame() {
   Projectile *bullet;
   int car;
 
-  for ( slot = 0; slot < MAX_BULLETS; ++slot ) {
+  for ( slot = 0; slot < bullets.size(); ++slot ) {
     if ( bullets[ slot ] != NULL ) {
 
       bullet = bullets[ slot ];
