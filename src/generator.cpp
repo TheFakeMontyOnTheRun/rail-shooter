@@ -119,7 +119,7 @@ void updateGame() {
   int car;
 
   for ( slot = 0; slot < MAX_BULLETS; ++slot ) {
-    if ( bullets[ slot ] != NULL ) {  
+    if ( bullets[ slot ] != NULL ) {
 
       bullet = bullets[ slot ];
       bullet->x += bullet->speedX;
@@ -146,7 +146,7 @@ void updateGame() {
 	  villainTrain.basicTrainProps.cars[ car ].hull -= 1;
 	  destroyBullet( bullet );
 	  fireBullet( villainTrain.basicTrainProps.position + villainTrain.basicTrainProps.cars[ car ].position, 35, -1, 1 );
-	  goto nextBullet;
+	  return;
 	}      
       }
 
@@ -163,8 +163,6 @@ void updateGame() {
 	}      
       }
     }    
-  nextBullet:
-    bullet = bullet; /* noop */
   }
 
 
