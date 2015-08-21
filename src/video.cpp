@@ -76,10 +76,7 @@ void drawTrain(std::vector<Car> &cars, int pos, int line, SDL_Surface*asset) {
 		tile.w = car.length;
 		tile.y = line;
 		tile.h = 15;
-
-		if (car.hit) {
-			car.hit = 0;
-		}
+		car.hit = false;
 
 		SDL_BlitSurface(asset, NULL, video, &tile);
 	}

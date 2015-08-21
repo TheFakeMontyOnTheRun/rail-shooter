@@ -23,7 +23,7 @@ bool quit = false;
 
 void initCar(Car* car, int position) {
 	car->hull = 32;
-	car->hit = 0;
+	car->hit = false;
 	car->length = 30;
 	car->position = 5 + position;
 }
@@ -122,7 +122,7 @@ void updateGame() {
 
 			if (isHit(villainTrain.basicTrainProps.position, 15, &car,
 					bullet)) {
-				car.hit = 1;
+				car.hit = true;
 				car.hull -= 1;
 				toDestroy.push_back(bullet);
 				fireBullet(villainTrain.basicTrainProps.position + car.position,
@@ -138,7 +138,7 @@ void updateGame() {
 			}
 
 			if (isHit(heroTrain.basicTrainProps.position, 150, &car, bullet)) {
-				car.hit = 1;
+				car.hit = true;
 				car.hull -= 1;
 				destroyBullet(bullet);
 			}

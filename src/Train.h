@@ -4,7 +4,7 @@
 typedef struct {
 	int hull;
 	int length;
-	int hit;
+	bool hit;
 	int position;
 } Car;
 
