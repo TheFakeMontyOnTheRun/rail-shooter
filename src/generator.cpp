@@ -37,7 +37,7 @@ void initTrain(Train* train, int cars) {
 	int lastPosition = 0;
 
 	for (car = 0; car < cars; ++car) {
-		Car *newCar = (Car*) malloc(sizeof(Car));
+		Car *newCar = new Car();
 		initCar(newCar, lastPosition);
 		train->cars.push_back(*newCar);
 		lastPosition = train->cars[car].position + train->cars[car].length;
@@ -59,7 +59,7 @@ void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
 
 	Projectile *bullet;
 
-	bullet = (Projectile*) malloc(sizeof(Projectile));
+	bullet =  new Projectile();
 	bullet->x = xPos;
 	bullet->y = yPos;
 	bullet->speedY = ySpeed;
@@ -93,7 +93,7 @@ int isHit(int pos, int line, Car* car, Projectile *bullet) {
 void destroyBullet(Projectile *bullet) {
 	bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet),
 			bullets.end());
-	free(bullet);
+	delete bullet;
 }
 
 void updateGame() {
