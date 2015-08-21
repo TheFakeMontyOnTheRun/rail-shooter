@@ -114,6 +114,8 @@ void refreshGraphics() {
 void handleEvents() {
 	SDL_Event events;
 
+	memset( &events, 0, sizeof( events ) );
+
 	SDL_PollEvent(&events);
 
 	if (events.type == SDL_KEYDOWN) {

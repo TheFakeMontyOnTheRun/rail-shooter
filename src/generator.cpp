@@ -51,8 +51,8 @@ void initTrains() {
 	heroTrain.basicTrainProps.length = 30;
 	initTrain(&villainTrain.basicTrainProps, 1);
 	villainTrain.basicTrainProps.length =
-			villainTrain.basicTrainProps.cars[2].position
-					+ villainTrain.basicTrainProps.cars[2].length;
+			villainTrain.basicTrainProps.cars[0].position
+					+ villainTrain.basicTrainProps.cars[0].length;
 }
 
 void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
