@@ -70,7 +70,7 @@ void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
 }
 
 void shoot() {
-	for (auto car : heroTrain.basicTrainProps.cars) {
+	for (auto& car : heroTrain.basicTrainProps.cars) {
 		fireBullet(heroTrain.basicTrainProps.position + car.position, 150, 1,
 				-1);
 	}
@@ -100,7 +100,7 @@ void updateGame() {
 
 	std::vector<Projectile*> toDestroy;
 
-	for (auto bullet : bullets) {
+	for (auto& bullet : bullets) {
 		bullet->x += bullet->speedX;
 		bullet->y += bullet->speedY;
 
@@ -114,7 +114,7 @@ void updateGame() {
 			continue;
 		}
 
-		for (auto car : villainTrain.basicTrainProps.cars) {
+		for (auto& car : villainTrain.basicTrainProps.cars) {
 
 			if (car.hull <= 0) {
 				continue;
@@ -131,7 +131,7 @@ void updateGame() {
 			}
 		}
 
-		for (auto car : heroTrain.basicTrainProps.cars) {
+		for (auto& car : heroTrain.basicTrainProps.cars) {
 
 			if (car.hull <= 0) {
 				continue;
@@ -160,7 +160,7 @@ void updateGame() {
 		}
 	}
 
-	for (auto bullet : toDestroy) {
+	for (auto &bullet : toDestroy) {
 		destroyBullet(bullet);
 	}
 }

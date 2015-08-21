@@ -71,7 +71,7 @@ void drawTrain(std::vector<Car> &cars, int pos, int line, SDL_Surface*asset) {
 	int acc;
 	acc = pos;
 
-	for (auto car : cars) {
+	for (auto& car : cars) {
 
 		tile.x = acc + car.position;
 		tile.w = car.length;
@@ -98,7 +98,7 @@ void refreshGraphics() {
 
 	SDL_Rect tile;
 
-	for (auto bullet : bullets) {
+	for (auto& bullet : bullets) {
 
 		if (bullet != NULL) {
 			tile.x = bullet->x;
