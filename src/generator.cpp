@@ -171,7 +171,7 @@ int main(int argc, char **argv) {
 	initGroundTypes();
 	initTrains();
 
-	quit = 0;
+	quit = false;
 
 	struct timeval timeBefore;
 	struct timeval timeAfter;

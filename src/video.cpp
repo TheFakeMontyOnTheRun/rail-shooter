@@ -120,7 +120,7 @@ void handleEvents() {
 
 	if (events.type == SDL_KEYDOWN) {
 		if (events.key.keysym.sym == SDLK_q) {
-			quit = 1;
+			quit = true;
 		}
 
 		if (events.key.keysym.sym == SDLK_LEFT) {
