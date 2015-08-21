@@ -2,18 +2,18 @@
 #define TRAIN_H
 
 typedef struct {
-  int hull;
-  int length;
-  int hit;
-  int position;
+	int hull;
+	int length;
+	int hit;
+	int position;
 } Car;
 
 typedef struct {
-  int speed;
-  int position;
-  int length;
-  int carsCount;
-  Car* cars;
+	int speed;
+	int position;
+	int length;
+	int carsCount;
+	Car* cars;
 } Train;
 
 #endif
