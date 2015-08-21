@@ -63,25 +63,23 @@ void clearGraphics() {
 	SDL_FillRect(video, NULL, 0);
 }
 
-void drawTrain(int carCount, Car *cars, int pos, int line, SDL_Surface*asset) {
+void drawTrain(std::vector<Car> &cars, int pos, int line, SDL_Surface*asset) {
 
 	SDL_Rect tile;
-	int c;
-
 	int acc;
-
 	acc = pos;
 
-	for (c = 0; c < carCount; ++c) {
+	for (auto car : cars) {
 
-		tile.x = acc + cars[c].position;
-		tile.w = cars[c].length;
+		tile.x = acc + car.position;
+		tile.w = car.length;
 		tile.y = line;
 		tile.h = 15;
 
-		if (cars[c].hit) {
-			cars[c].hit = 0;
+		if (car.hit) {
+			car.hit = 0;
 		}
+
 		SDL_BlitSurface(asset, NULL, video, &tile);
 	}
 }
@@ -90,17 +88,15 @@ void refreshGraphics() {
 
 	drawBackground();
 
-	drawTrain(villainTrain.basicTrainProps.carsCount,
-			villainTrain.basicTrainProps.cars,
+	drawTrain(villainTrain.basicTrainProps.cars,
 			villainTrain.basicTrainProps.position, -30, zbor);
 
-	drawTrain(heroTrain.basicTrainProps.carsCount,
-			heroTrain.basicTrainProps.cars, heroTrain.basicTrainProps.position,
-			100, player);
+	drawTrain(heroTrain.basicTrainProps.cars,
+			heroTrain.basicTrainProps.position, 100, player);
 
 	SDL_Rect tile;
 
-	for ( auto bullet : bullets ) {
+	for (auto bullet : bullets) {
 
 		if (bullet != NULL) {
 			tile.x = bullet->x;

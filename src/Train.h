@@ -12,8 +12,7 @@ typedef struct {
 	int speed;
 	int position;
 	int length;
-	int carsCount;
-	Car* cars;
+	std::vector<Car> cars;
 } Train;
 
 #endif
