@@ -55,8 +55,7 @@ void drawBackground() {
 			tile.w = 64;
 			tile.h = 64;
 
-			SDL_BlitSurface(bg1, NULL, video, &tile);
-			/*      SDL_FillRect( video, &tile, columns[ (c + mapPos ) % 8 ].tiles[ d ]->colour );*/
+			SDL_BlitSurface( columns[ (c + mapPos ) % 8 ].tiles[ d ] == &ice ? bg1 : bg2, NULL, video, &tile);
 		}
 	}
 }
