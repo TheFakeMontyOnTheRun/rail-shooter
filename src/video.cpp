@@ -66,9 +66,7 @@ void clearGraphics() {
 void drawTrain(int carCount, Car *cars, int pos, int line, SDL_Surface*asset) {
 
 	SDL_Rect tile;
-	int healthIndicator;
 	int c;
-	int d;
 
 	int acc;
 
@@ -80,10 +78,8 @@ void drawTrain(int carCount, Car *cars, int pos, int line, SDL_Surface*asset) {
 		tile.w = cars[c].length;
 		tile.y = line;
 		tile.h = 15;
-		healthIndicator = cars[c].hull + 255;
 
 		if (cars[c].hit) {
-			healthIndicator = 0;
 			cars[c].hit = 0;
 		}
 		SDL_BlitSurface(asset, NULL, video, &tile);
@@ -102,14 +98,9 @@ void refreshGraphics() {
 			heroTrain.basicTrainProps.cars, heroTrain.basicTrainProps.position,
 			100, player);
 
-	int slot;
-	Projectile *bullet;
-
 	SDL_Rect tile;
 
-	for (slot = 0; slot < bullets.size(); ++slot) {
-
-		bullet = bullets[slot];
+	for ( auto bullet : bullets ) {
 
 		if (bullet != NULL) {
 			tile.x = bullet->x;
