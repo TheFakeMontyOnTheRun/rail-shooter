@@ -7,7 +7,6 @@ public:
   float y;
   float speedX;
   float speedY;
-  int kind;
 };
 
 
