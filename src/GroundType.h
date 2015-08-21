@@ -1,10 +1,11 @@
 #ifndef GROUNDTYPE_H
 #define GROUNDTYPE_H
 
-typedef struct {
+class GroundType {
+public:
 	char representation;	
 	int colour;
-} GroundType;
+};
 
 
 #endif
