@@ -8,7 +8,7 @@
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
-#include "projectile.h"
+#include "Projectile.h"
 
 #include "video.h"
 #include "background.h" 
