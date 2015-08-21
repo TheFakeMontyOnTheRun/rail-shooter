@@ -2,6 +2,8 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <vector>
+#include <thread>
+#include <chrono>
 
 #include "GroundType.h"
 #include "Train.h"
@@ -35,7 +37,7 @@ void initGraphics() {
 }
 
 void sleepForMS(long ms) {
-	SDL_Delay(ms);
+	std::this_thread::sleep_for(std::chrono::milliseconds( ms ));
 }
 
 void drawBackground() {
