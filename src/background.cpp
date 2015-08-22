@@ -6,11 +6,8 @@ GroundType ice;
 GroundType desert;
 
 void initGroundTypes() {
-	ice.representation = 'O';
-	ice.colour = 0xFF55FF55;
-
-	desert.representation = '.';
-	desert.colour = 0xFF555555;
+	ice.resId = 1;
+	desert.resId = 2;
 }
 
 void updateTerrain(int mapPos) {

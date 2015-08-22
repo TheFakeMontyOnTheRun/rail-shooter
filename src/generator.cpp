@@ -64,7 +64,6 @@ void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
 	bullet->y = yPos;
 	bullet->speedY = ySpeed;
 	bullet->speedX = xSpeed;
-	bullet->kind = 1;
 
 	bullets.push_back(bullet);
 }

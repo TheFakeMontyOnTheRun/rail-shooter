@@ -3,8 +3,7 @@
 
 class GroundType {
 public:
-	char representation;	
-	int colour;
+	int resId;
 };
 
 
