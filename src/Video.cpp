@@ -11,9 +11,10 @@
 #include "VillainTrain.h"
 #include  "Projectile.h"
 
-#include "video.h"
-#include "generator.h"
-#include "background.h" 
+#include "Video.h"
+
+#include "Background.h"
+#include "Generator.h"
 
 SDL_Surface *video;
 SDL_Surface *shot;

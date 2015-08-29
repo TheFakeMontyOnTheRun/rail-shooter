@@ -1,7 +1,8 @@
 #ifndef VILLAINTRAIN_H
 #define VILLAINTRAIN_H
 
-typedef struct {
+class VillainTrain {
+public:
 	Train basicTrainProps;
-} VillainTrain;
+};
 #endif

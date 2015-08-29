@@ -1,5 +1,5 @@
-#include "GroundType.h" 
-#include "background.h"
+#include "GroundType.h"
+#include "Background.h"
 
 Column columns[8];
 GroundType ice;

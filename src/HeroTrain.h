@@ -1,8 +1,9 @@
 #ifndef HEROTRAIN_H
 #define HEROTRAIN
 
-	typedef struct {
-		Train basicTrainProps;
-		int crew;
-	} HeroTrain;
+class HeroTrain {
+public:
+	Train basicTrainProps;
+	int crew;
+};
 #endif

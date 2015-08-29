@@ -10,9 +10,10 @@
 #include "VillainTrain.h"
 #include "Projectile.h"
 
-#include "video.h"
-#include "background.h" 
-#include "generator.h"
+#include "Generator.h"
+
+#include "Background.h"
+#include "Video.h"
 
 HeroTrain heroTrain;
 VillainTrain villainTrain;
@@ -28,10 +29,10 @@ void initCar(Car* car, int position) {
 	car->position = 5 + position;
 }
 
-void initTrain(Train* train, int cars) {
+void initTrain(Train& train, int cars) {
 
-	train->position = 0;
-	train->speed = 255;
+	train.position = 0;
+	train.speed = 255;
 
 	int car;
 	int lastPosition = 0;
@@ -39,17 +40,17 @@ void initTrain(Train* train, int cars) {
 	for (car = 0; car < cars; ++car) {
 		Car *newCar = new Car();
 		initCar(newCar, lastPosition);
-		train->cars.push_back(*newCar);
-		lastPosition = train->cars[car].position + train->cars[car].length;
+		train.cars.push_back(*newCar);
+		lastPosition = train.cars[car].position + train.cars[car].length;
 	}
 }
 
 void initTrains() {
 
-	initTrain(&heroTrain.basicTrainProps, 1);
+	initTrain(heroTrain.basicTrainProps, 1);
 	heroTrain.crew = 1;
 	heroTrain.basicTrainProps.length = 30;
-	initTrain(&villainTrain.basicTrainProps, 1);
+	initTrain(villainTrain.basicTrainProps, 1);
 	villainTrain.basicTrainProps.length =
 			villainTrain.basicTrainProps.cars[0].position
 					+ villainTrain.basicTrainProps.cars[0].length;
