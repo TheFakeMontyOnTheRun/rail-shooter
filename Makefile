@@ -1,6 +1,6 @@
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image
 CXXFLAGS = -O3 -std=c++1y -g -Wall --pedantic
-OBJ = src/generator.o src/video.o src/background.o
+OBJ = src/RailShooter.o src/Video.o src/Background.o
 TARGET = rails
 
 $(TARGET):	$(OBJ)

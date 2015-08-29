@@ -14,7 +14,7 @@
 #include "Video.h"
 
 #include "Background.h"
-#include "Generator.h"
+#include "RailShooter.h"
 
 SDL_Surface *video;
 SDL_Surface *shot;

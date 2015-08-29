@@ -9,9 +9,7 @@
 #include "HeroTrain.h"
 #include "VillainTrain.h"
 #include "Projectile.h"
-
-#include "Generator.h"
-
+#include "RailShooter.h"
 #include "Background.h"
 #include "Video.h"
 
