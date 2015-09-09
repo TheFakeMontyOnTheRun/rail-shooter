@@ -1,19 +1,21 @@
 #ifndef TRAIN_H
 #define TRAIN_H
 
-typedef struct {
-  int hull;
-  int length;
-  int hit;
-  int position;
-} Car;
+class Car {
+public:
 
-typedef struct {
-  int speed;
-  int position;
-  int length;
-  int carsCount;
-  Car* cars;
-} Train;
+	int hull;
+	int length;
+	bool hit;
+	int position;
+};
+
+class Train {
+public:
+	int speed;
+	int position;
+	int length;
+	std::vector<Car> cars;
+};
 
 #endif
