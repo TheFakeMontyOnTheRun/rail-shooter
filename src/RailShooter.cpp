@@ -48,7 +48,10 @@ void initTrains() {
 	initTrain(heroTrain.basicTrainProps, 1);
 	heroTrain.crew = 1;
 	heroTrain.basicTrainProps.length = 30;
+	heroTrain.basicTrainProps.speed = 8;
 	initTrain(villainTrain.basicTrainProps, 1);
+
+	villainTrain.basicTrainProps.speed = 8;
 	villainTrain.basicTrainProps.length =
 			villainTrain.basicTrainProps.cars[0].position
 					+ villainTrain.basicTrainProps.cars[0].length;
@@ -69,7 +72,7 @@ void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
 
 void shoot() {
 	for (auto& car : heroTrain.basicTrainProps.cars) {
-		fireBullet(heroTrain.basicTrainProps.position + car.position, 150, 1,
+		fireBullet(heroTrain.basicTrainProps.position + car.position, 150, 1 + heroTrain.basicTrainProps.speed,
 				-1);
 	}
 }
@@ -143,20 +146,8 @@ void updateGame() {
 		}
 	}
 
-	if (villainTrain.basicTrainProps.speed == 0) {
-		villainTrain.basicTrainProps.position--;
-
-		if (villainTrain.basicTrainProps.position
-				== -villainTrain.basicTrainProps.length) {
-			villainTrain.basicTrainProps.speed = 8;
-		}
-	} else {
-		villainTrain.basicTrainProps.position++;
-
-		if (villainTrain.basicTrainProps.position == 255) {
-			villainTrain.basicTrainProps.speed = 0;
-		}
-	}
+	heroTrain.basicTrainProps.position += heroTrain.basicTrainProps.speed;
+	villainTrain.basicTrainProps.position += villainTrain.basicTrainProps.speed;
 
 	for (auto &bullet : toDestroy) {
 		destroyBullet(bullet);
@@ -202,7 +193,6 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	printf("slept for %d frames", slept);
 	shutdownGraphics();
 	return 0;
 }
