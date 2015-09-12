@@ -72,8 +72,8 @@ void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
 
 void shoot() {
 	for (auto& car : heroTrain.basicTrainProps.cars) {
-		fireBullet(heroTrain.basicTrainProps.position + car.position, 150, 1 + heroTrain.basicTrainProps.speed,
-				-1);
+		fireBullet(heroTrain.basicTrainProps.position + car.position, PLAYER_RAIL_Y - 5, 1 + heroTrain.basicTrainProps.speed,
+				-7);
 	}
 }
 
@@ -110,7 +110,7 @@ void updateGame() {
 			continue;
 		}
 
-		if (bullet->y >= 192) {
+		if (bullet->y >= YRES) {
 			destroyBullet(bullet);
 			continue;
 		}
@@ -121,13 +121,13 @@ void updateGame() {
 				continue;
 			}
 
-			if (isHit(villainTrain.basicTrainProps.position, 15, &car,
+			if (isHit(villainTrain.basicTrainProps.position, ENEMY_RAIL_Y, &car,
 					bullet)) {
 				car.hit = true;
 				car.hull -= 1;
 				toDestroy.push_back(bullet);
 				fireBullet(villainTrain.basicTrainProps.position + car.position,
-						35, -1, 1);
+						ENEMY_RAIL_Y + 5, -1, 1);
 				continue;
 			}
 		}
@@ -138,7 +138,7 @@ void updateGame() {
 				continue;
 			}
 
-			if (isHit(heroTrain.basicTrainProps.position, 150, &car, bullet)) {
+			if (isHit(heroTrain.basicTrainProps.position, PLAYER_RAIL_Y, &car, bullet)) {
 				car.hit = true;
 				car.hull -= 1;
 				destroyBullet(bullet);
@@ -176,7 +176,7 @@ int main(int argc, char **argv) {
 		updateTerrain(mapPos);
 		updateGame();
 
-		if (mapPos > 8) {
+		if (mapPos > TILES_X) {
 			refreshGraphics();
 		}
 

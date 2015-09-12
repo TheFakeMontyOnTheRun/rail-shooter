@@ -49,15 +49,14 @@ void drawBackground() {
 	int c;
 	int d;
 
-	for (c = 0; c < 5; ++c) {
-		for (d = 0; d < 3; ++d) {
+	tile.w = 64;
+	tile.h = 64;
 
+	for (c = 0; c < TILES_X; ++c) {
+		for (d = 0; d < TILES_Y; ++d) {
 			tile.x = (c * 64) - (mapPos % 64);
 			tile.y = d * 64;
-			tile.w = 64;
-			tile.h = 64;
-
-			SDL_BlitSurface( columns[ (c + mapPos ) % 8 ].tiles[ d ] == &ice ? bg1 : bg2, NULL, video, &tile);
+			SDL_BlitSurface( ( columns[ (c + mapPos ) % TILES_X ].tiles[ d ] == &ice ) ? bg1 : bg1, nullptr, video, &tile);
 		}
 	}
 }
@@ -88,9 +87,9 @@ void refreshGraphics() {
 
 	drawBackground();
 
-	drawTrain(villainTrain.basicTrainProps, mapPos, -30, zbor);
+	drawTrain(villainTrain.basicTrainProps, mapPos, ENEMY_RAIL_Y, zbor);
 
-	drawTrain(heroTrain.basicTrainProps, mapPos, 100, player);
+	drawTrain(heroTrain.basicTrainProps, mapPos, PLAYER_RAIL_Y, player);
 
 	SDL_Rect tile;
 

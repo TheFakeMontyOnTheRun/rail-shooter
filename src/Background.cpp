@@ -1,7 +1,7 @@
 #include "GroundType.h"
 #include "Background.h"
 
-Column columns[8];
+Column columns[TILES_X];
 GroundType ice;
 GroundType desert;
 
@@ -12,10 +12,10 @@ void initGroundTypes() {
 
 void updateTerrain(int mapPos) {
 	int stripPos = 0;
-	int stripWidth = 6;
+	int stripWidth = TILES_Y;
 
 	for (stripPos = 0; stripPos < stripWidth; ++stripPos) {
-		columns[mapPos % 8].tiles[stripPos] =
-				(mapPos % 8) > stripPos ? &ice : &desert;
+		columns[mapPos % TILES_X].tiles[stripPos] =
+				(mapPos % TILES_X) > stripPos ? &ice : &desert;
 	}
 }
