@@ -2,6 +2,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <vector>
+#include <iostream>
 #include <thread>
 #include <chrono>
 
@@ -48,15 +49,14 @@ void drawBackground() {
 	int c;
 	int d;
 
-	for (c = 0; c < 5; ++c) {
-		for (d = 0; d < 3; ++d) {
+	tile.w = 64;
+	tile.h = 64;
 
+	for (c = 0; c < TILES_X; ++c) {
+		for (d = 0; d < TILES_Y; ++d) {
 			tile.x = (c * 64) - (mapPos % 64);
 			tile.y = d * 64;
-			tile.w = 64;
-			tile.h = 64;
-
-			SDL_BlitSurface( columns[ (c + mapPos ) % 8 ].tiles[ d ] == &ice ? bg1 : bg2, NULL, video, &tile);
+			SDL_BlitSurface( ( columns[ (c + mapPos ) % TILES_X ].tiles[ d ] == &ice ) ? bg1 : bg1, nullptr, video, &tile);
 		}
 	}
 }
@@ -65,15 +65,15 @@ void clearGraphics() {
 	SDL_FillRect(video, NULL, 0);
 }
 
-void drawTrain(std::vector<Car> &cars, int pos, int line, SDL_Surface*asset) {
+void drawTrain( Train &train, int pos, int line, SDL_Surface*asset) {
 
 	SDL_Rect tile;
 	int acc;
-	acc = pos;
+	acc = train.position;
 
-	for (auto& car : cars) {
+	for (auto& car : train.cars) {
 
-		tile.x = acc + car.position;
+		tile.x = acc + ( car.position  - pos );
 		tile.w = car.length;
 		tile.y = line;
 		tile.h = 15;
@@ -87,18 +87,16 @@ void refreshGraphics() {
 
 	drawBackground();
 
-	drawTrain(villainTrain.basicTrainProps.cars,
-			villainTrain.basicTrainProps.position, -30, zbor);
+	drawTrain(villainTrain.basicTrainProps, mapPos, ENEMY_RAIL_Y, zbor);
 
-	drawTrain(heroTrain.basicTrainProps.cars,
-			heroTrain.basicTrainProps.position, 100, player);
+	drawTrain(heroTrain.basicTrainProps, mapPos, PLAYER_RAIL_Y, player);
 
 	SDL_Rect tile;
 
 	for (auto& bullet : bullets) {
 
 		if (bullet != NULL) {
-			tile.x = bullet->x;
+			tile.x = bullet->x - mapPos;
 			tile.y = bullet->y;
 			tile.w = 8;
 			tile.h = 8;
@@ -122,8 +120,17 @@ void handleEvents() {
 			quit = true;
 		}
 
+		if (events.key.keysym.sym == SDLK_a) {
+			villainTrain.basicTrainProps.speed -= 1;
+		}
+
+		if (events.key.keysym.sym == SDLK_s) {
+			villainTrain.basicTrainProps.speed += 1;
+		}
+
+
 		if (events.key.keysym.sym == SDLK_LEFT) {
-			heroTrain.basicTrainProps.position -= 16;
+			heroTrain.basicTrainProps.speed -= 1;
 		}
 
 		if (events.key.keysym.sym == SDLK_SPACE) {
@@ -131,7 +138,7 @@ void handleEvents() {
 		}
 
 		if (events.key.keysym.sym == SDLK_RIGHT) {
-			heroTrain.basicTrainProps.position += 16;
+			heroTrain.basicTrainProps.speed += 1;
 		}
 
 		if (events.key.keysym.sym == SDLK_SPACE) {
