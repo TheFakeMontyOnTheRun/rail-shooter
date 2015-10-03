@@ -5,5 +5,7 @@ class HeroTrain {
 public:
 	Train basicTrainProps;
 	int crew;
+
+	HeroTrain();
 };
 #endif

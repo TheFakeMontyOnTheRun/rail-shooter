@@ -5,6 +5,8 @@
 #include <algorithm>
 
 #include "GroundType.h"
+#include "CarElement.h"
+#include "Car.h"
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
@@ -19,12 +21,15 @@ std::vector<Projectile*> bullets;
 
 int mapPos = 0;
 bool quit = false;
-
+/*
 void initCar(Car* car, int position) {
 	car->hull = 32;
 	car->hit = false;
 	car->length = 30;
 	car->position = 5 + position;
+
+
+	car->elements.push_back( CarElement( 10, 5, 4 ) );
 }
 
 void initTrain(Train& train, int cars) {
@@ -36,10 +41,10 @@ void initTrain(Train& train, int cars) {
 	int lastPosition = 0;
 
 	for (car = 0; car < cars; ++car) {
-		Car *newCar = new Car();
-		initCar(newCar, lastPosition);
-		train.cars.push_back(*newCar);
-		lastPosition = train.cars[car].position + train.cars[car].length;
+	  Car *newCar = new Car( 30, 20, 0);
+	  initCar(newCar, lastPosition);
+	  train.cars.push_back(*newCar);
+	  lastPosition = train.cars[car].position + train.cars[car].length;
 	}
 }
 
@@ -56,7 +61,7 @@ void initTrains() {
 			villainTrain.basicTrainProps.cars[0].position
 					+ villainTrain.basicTrainProps.cars[0].length;
 }
-
+*/
 void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
 
 	Projectile *bullet;
@@ -158,7 +163,6 @@ int main(int argc, char **argv) {
 
 	initGraphics();
 	initGroundTypes();
-	initTrains();
 
 	quit = false;
 

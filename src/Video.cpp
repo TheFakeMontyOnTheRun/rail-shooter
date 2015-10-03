@@ -7,6 +7,8 @@
 #include <chrono>
 
 #include "GroundType.h"
+#include "CarElement.h"
+#include "Car.h"
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
@@ -23,6 +25,7 @@ SDL_Surface *player;
 SDL_Surface *zbor;
 SDL_Surface *bg1;
 SDL_Surface *bg2;
+SDL_Surface *turret;
 
 void initGraphics() {
 
@@ -36,6 +39,7 @@ void initGraphics() {
 	zbor = IMG_Load("res/foes/zbor1.png");
 	bg1 = IMG_Load("res/scenary/stage1-floor_all.png");
 	bg2 = IMG_Load("res/scenary/stage1-floor_grass.png");
+	turret = IMG_Load( "res/foes/turret.png" );
 }
 
 void sleepForMS(long ms) {
@@ -66,30 +70,36 @@ void clearGraphics() {
 }
 
 void drawTrain( Train &train, int pos, int line, SDL_Surface*asset) {
-
-	SDL_Rect tile;
-	int acc;
-	acc = train.position;
-
-	for (auto& car : train.cars) {
-
-		tile.x = acc + ( car.position  - pos );
-		tile.w = car.length;
-		tile.y = line;
-		tile.h = 15;
-		car.hit = false;
-
-		SDL_BlitSurface(asset, NULL, video, &tile);
-	}
+  
+  SDL_Rect tile;
+    
+  for (auto& car : train.cars) {
+    
+    tile.x = pos + car.position;
+    tile.w = car.length;
+    tile.y = line;
+    tile.h = 15;
+    car.hit = false;
+    
+    SDL_BlitSurface(asset, nullptr, video, &tile);
+    
+    for ( auto& carElement : car.elements ) {
+      tile.x = pos + car.position + carElement.position;
+      tile.w = 30;
+      tile.y = line;
+      tile.h = 15;
+      SDL_BlitSurface( turret, nullptr, video, &tile);
+    }
+  }
 }
 
 void refreshGraphics() {
 
 	drawBackground();
 
-	drawTrain(villainTrain.basicTrainProps, mapPos, ENEMY_RAIL_Y, zbor);
+	drawTrain(villainTrain.basicTrainProps, villainTrain.basicTrainProps.position - mapPos, ENEMY_RAIL_Y, zbor);
 
-	drawTrain(heroTrain.basicTrainProps, mapPos, PLAYER_RAIL_Y, player);
+	drawTrain(heroTrain.basicTrainProps, heroTrain.basicTrainProps.position -  mapPos, PLAYER_RAIL_Y, player);
 
 	SDL_Rect tile;
 

@@ -4,5 +4,7 @@
 class VillainTrain {
 public:
 	Train basicTrainProps;
+
+	VillainTrain();
 };
 #endif
