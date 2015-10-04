@@ -12,7 +12,8 @@
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
-#include  "Projectile.h"
+#include "Vec2.h"
+#include  "Bullet.h"
 
 #include "Video.h"
 
@@ -106,8 +107,8 @@ void refreshGraphics() {
 	for (auto& bullet : bullets) {
 
 		if (bullet != NULL) {
-			tile.x = bullet->x - mapPos;
-			tile.y = bullet->y;
+			tile.x = bullet->position.x - mapPos;
+			tile.y = bullet->position.y;
 			tile.w = 8;
 			tile.h = 8;
 

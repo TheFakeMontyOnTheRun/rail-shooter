@@ -8,6 +8,7 @@ class Train {
   int length;
   std::vector<Car> cars;
 
+  void update( long step );
   Train( int length, int position, int speed );
 };
 

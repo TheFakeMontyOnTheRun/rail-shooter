@@ -9,6 +9,7 @@ class Car {
   bool hit;
   int position;
 
+  void update( long step );
   Car( int hull, int length, int position );
 };
 #endif

@@ -9,6 +9,7 @@ class CarElement {
   bool hit;
   int position;
 
+  void update( long step );
   CarElement( int hull, int length, int relativePosition );
 };
 #endif

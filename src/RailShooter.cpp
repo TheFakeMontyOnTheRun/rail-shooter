@@ -10,69 +10,22 @@
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
-#include "Projectile.h"
+#include "Vec2.h"
+#include "Bullet.h"
 #include "RailShooter.h"
 #include "Background.h"
 #include "Video.h"
 
 HeroTrain heroTrain;
 VillainTrain villainTrain;
-std::vector<Projectile*> bullets;
+std::vector<Bullet*> bullets;
 
 int mapPos = 0;
 bool quit = false;
-/*
-void initCar(Car* car, int position) {
-	car->hull = 32;
-	car->hit = false;
-	car->length = 30;
-	car->position = 5 + position;
 
 
-	car->elements.push_back( CarElement( 10, 5, 4 ) );
-}
-
-void initTrain(Train& train, int cars) {
-
-	train.position = 0;
-	train.speed = 255;
-
-	int car;
-	int lastPosition = 0;
-
-	for (car = 0; car < cars; ++car) {
-	  Car *newCar = new Car( 30, 20, 0);
-	  initCar(newCar, lastPosition);
-	  train.cars.push_back(*newCar);
-	  lastPosition = train.cars[car].position + train.cars[car].length;
-	}
-}
-
-void initTrains() {
-
-	initTrain(heroTrain.basicTrainProps, 1);
-	heroTrain.crew = 1;
-	heroTrain.basicTrainProps.length = 30;
-	heroTrain.basicTrainProps.speed = 8;
-	initTrain(villainTrain.basicTrainProps, 1);
-
-	villainTrain.basicTrainProps.speed = 8;
-	villainTrain.basicTrainProps.length =
-			villainTrain.basicTrainProps.cars[0].position
-					+ villainTrain.basicTrainProps.cars[0].length;
-}
-*/
 void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
-
-	Projectile *bullet;
-
-	bullet =  new Projectile();
-	bullet->x = xPos;
-	bullet->y = yPos;
-	bullet->speedY = ySpeed;
-	bullet->speedX = xSpeed;
-
-	bullets.push_back(bullet);
+	bullets.push_back(new Bullet( Vec2(xPos, yPos), Vec2(xSpeed, ySpeed)));
 }
 
 void shoot() {
@@ -82,81 +35,77 @@ void shoot() {
 	}
 }
 
-int isHit(int pos, int line, Car* car, Projectile *bullet) {
+bool isHit(int pos, int line, Car* car, const Bullet *bullet) {
 
-	if (bullet != NULL) {
+  if (bullet->position.y > line && bullet->position.y < (line + 15)
+      && bullet->position.x > (car->position + pos)
+      && bullet->position.x < (car->position + car->length + pos)) {
+    return true;
+  }
 
-		if (bullet->y > line && bullet->y < (line + 15)
-				&& bullet->x > (car->position + pos)
-				&& bullet->x < (car->position + car->length + pos)) {
-			return 1;
-		}
-	}
-
-	return 0;
+  return false;
 }
 
-void destroyBullet(Projectile *bullet) {
+void destroyBullet(const Bullet *bullet) {
 	bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet),
 			bullets.end());
 	delete bullet;
 }
 
 void updateGame() {
-
-	std::vector<Projectile*> toDestroy;
-
-	for (auto& bullet : bullets) {
-		bullet->x += bullet->speedX;
-		bullet->y += bullet->speedY;
-
-		if (bullet->y < 0) {
-			destroyBullet(bullet);
-			continue;
-		}
-
-		if (bullet->y >= YRES) {
-			destroyBullet(bullet);
-			continue;
-		}
-
-		for (auto& car : villainTrain.basicTrainProps.cars) {
-
-			if (car.hull <= 0) {
-				continue;
-			}
-
-			if (isHit(villainTrain.basicTrainProps.position, ENEMY_RAIL_Y, &car,
-					bullet)) {
-				car.hit = true;
-				car.hull -= 1;
-				toDestroy.push_back(bullet);
-				fireBullet(villainTrain.basicTrainProps.position + car.position,
-						ENEMY_RAIL_Y + 5, -1, 1);
-				continue;
-			}
-		}
-
-		for (auto& car : heroTrain.basicTrainProps.cars) {
-
-			if (car.hull <= 0) {
-				continue;
-			}
-
-			if (isHit(heroTrain.basicTrainProps.position, PLAYER_RAIL_Y, &car, bullet)) {
-				car.hit = true;
-				car.hull -= 1;
-				destroyBullet(bullet);
-			}
-		}
-	}
-
-	heroTrain.basicTrainProps.position += heroTrain.basicTrainProps.speed;
-	villainTrain.basicTrainProps.position += villainTrain.basicTrainProps.speed;
-
-	for (auto &bullet : toDestroy) {
-		destroyBullet(bullet);
-	}
+  
+  std::vector<Bullet*> toDestroy;
+  
+  for (auto& bullet : bullets) {
+    bullet->update( 100 );
+    
+    if (bullet->position.y < 0) {
+      destroyBullet(bullet);
+      continue;
+    }
+    
+    if (bullet->position.y >= YRES) {
+      destroyBullet(bullet);
+      continue;
+    }
+    
+    for (auto& car : villainTrain.basicTrainProps.cars) {
+      
+      if (car.hull <= 0) {
+	continue;
+      }
+      
+      if (isHit(villainTrain.basicTrainProps.position, ENEMY_RAIL_Y, &car,
+		bullet)) {
+	car.hit = true;
+	car.hull -= 1;
+	toDestroy.push_back(bullet);
+	fireBullet(villainTrain.basicTrainProps.position + car.position,
+		   ENEMY_RAIL_Y + 5, -1, 1);
+	continue;
+      }
+    }
+    
+    for (auto& car : heroTrain.basicTrainProps.cars) {
+      
+      if (car.hull <= 0) {
+	continue;
+      }
+      
+      if (isHit(heroTrain.basicTrainProps.position, PLAYER_RAIL_Y, &car, bullet)) {
+	car.hit = true;
+	car.hull -= 1;
+	destroyBullet(bullet);
+      }
+    }
+  }
+  
+  heroTrain.basicTrainProps.update( 100 );
+  villainTrain.basicTrainProps.update( 100 );
+  
+  for (auto &bullet : toDestroy) {
+    destroyBullet(bullet);
+  }
 }
 
 int main(int argc, char **argv) {

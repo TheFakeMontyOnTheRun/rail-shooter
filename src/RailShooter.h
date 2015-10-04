@@ -3,7 +3,7 @@
 
 extern HeroTrain heroTrain;
 extern VillainTrain villainTrain;
-extern std::vector<Projectile *> bullets;
+extern std::vector<Bullet*> bullets;
 extern int mapPos;
 extern bool quit;
 

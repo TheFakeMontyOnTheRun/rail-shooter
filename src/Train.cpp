@@ -7,3 +7,12 @@
 Train::Train( int aLength, int aRelativePosition, int aSpeed ):
   length( aLength ), position( aRelativePosition ), speed( aSpeed ) {
 }
+
+void Train::update( long step ) {
+
+  position += speed;
+  
+  for ( auto& car : cars ) {
+    car.update( step );
+  }
+}
