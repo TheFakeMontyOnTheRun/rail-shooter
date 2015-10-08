@@ -13,6 +13,6 @@ void Train::update( long step ) {
   position += speed;
   
   for ( auto& car : cars ) {
-    car.update( step );
+    car->update( step );
   }
 }
