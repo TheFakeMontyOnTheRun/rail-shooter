@@ -29,7 +29,7 @@ SDL_Surface *bg1;
 SDL_Surface *bg2;
 SDL_Surface *turret;
 
-SDL_Surface *res[ 4 ];
+SDL_Surface *res[ 6 ];
 
 void initGraphics() {
 
@@ -50,6 +50,8 @@ void initGraphics() {
 	res[ 1 ] = player;
 	res[ 2 ] = zbor1;
 	res[ 3 ] = zbor2;
+	res[ 4 ] = turret;
+	res[ 5 ] = player;
 }
 
 void sleepForMS(long ms) {
@@ -96,11 +98,13 @@ void drawTrain( Train &train, int pos, int line) {
     SDL_BlitSurface(asset, nullptr, video, &tile);
     
     for ( auto& carElement : car->elements ) {
+
+      asset = res[ carElement->getResId() ];
       tile.x = pos + car->position + carElement->position;
       tile.w = 30;
       tile.y = line;
       tile.h = 15;
-      SDL_BlitSurface( turret, nullptr, video, &tile);
+      SDL_BlitSurface( asset, nullptr, video, &tile);
     }
   }
 }

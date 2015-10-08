@@ -8,7 +8,7 @@ class CarElement {
   int length;
   bool hit;
   int position;
-
+  virtual int getResId() = 0;
   virtual void update( long step );
   CarElement( int hull, int length, int relativePosition );
 };
