@@ -3,13 +3,13 @@
 
 class Car {
  public:
-  std::vector<CarElement> elements;
+  std::vector<CarElement*> elements;
   int hull;
   int length;
   bool hit;
   int position;
-
-  void update( long step );
+  virtual int getResId() = 0;
+  virtual void update( long step );
   Car( int hull, int length, int position );
 };
 #endif

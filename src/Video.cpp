@@ -23,10 +23,13 @@
 SDL_Surface *video;
 SDL_Surface *shot;
 SDL_Surface *player;
-SDL_Surface *zbor;
+SDL_Surface *zbor1;
+SDL_Surface *zbor2;
 SDL_Surface *bg1;
 SDL_Surface *bg2;
 SDL_Surface *turret;
+
+SDL_Surface *res[ 6 ];
 
 void initGraphics() {
 
@@ -37,10 +40,18 @@ void initGraphics() {
 	video = SDL_SetVideoMode(XRES, YRES, 0, SDL_HWSURFACE);
 	shot = IMG_Load("res/misc/shot.png");
 	player = IMG_Load("res/player/wagon.png");
-	zbor = IMG_Load("res/foes/zbor1.png");
+	zbor1 = IMG_Load("res/foes/zbor1.png");
+	zbor2 = IMG_Load("res/foes/zbor2.png");
 	bg1 = IMG_Load("res/scenary/stage1-floor_all.png");
 	bg2 = IMG_Load("res/scenary/stage1-floor_grass.png");
 	turret = IMG_Load( "res/foes/turret.png" );
+
+	res[ 0 ] = nullptr;
+	res[ 1 ] = player;
+	res[ 2 ] = zbor1;
+	res[ 3 ] = zbor2;
+	res[ 4 ] = turret;
+	res[ 5 ] = player;
 }
 
 void sleepForMS(long ms) {
@@ -67,29 +78,33 @@ void drawBackground() {
 }
 
 void clearGraphics() {
-	SDL_FillRect(video, NULL, 0);
+	SDL_FillRect(video, nullptr, 0);
 }
 
-void drawTrain( Train &train, int pos, int line, SDL_Surface*asset) {
+void drawTrain( Train &train, int pos, int line) {
   
   SDL_Rect tile;
-    
+  SDL_Surface *asset;
   for (auto& car : train.cars) {
+
+    asset = res[ car->getResId() ];
     
-    tile.x = pos + car.position;
-    tile.w = car.length;
+    tile.x = pos + car->position;
+    tile.w = car->length;
     tile.y = line;
     tile.h = 15;
-    car.hit = false;
+    car->hit = false;
     
     SDL_BlitSurface(asset, nullptr, video, &tile);
     
-    for ( auto& carElement : car.elements ) {
-      tile.x = pos + car.position + carElement.position;
+    for ( auto& carElement : car->elements ) {
+
+      asset = res[ carElement->getResId() ];
+      tile.x = pos + car->position + carElement->position;
       tile.w = 30;
       tile.y = line;
       tile.h = 15;
-      SDL_BlitSurface( turret, nullptr, video, &tile);
+      SDL_BlitSurface( asset, nullptr, video, &tile);
     }
   }
 }
@@ -98,22 +113,21 @@ void refreshGraphics() {
 
 	drawBackground();
 
-	drawTrain(villainTrain.basicTrainProps, villainTrain.basicTrainProps.position - mapPos, ENEMY_RAIL_Y, zbor);
+	drawTrain(villainTrain.basicTrainProps, villainTrain.basicTrainProps.position - mapPos, ENEMY_RAIL_Y);
 
-	drawTrain(heroTrain.basicTrainProps, heroTrain.basicTrainProps.position -  mapPos, PLAYER_RAIL_Y, player);
+	drawTrain(heroTrain.basicTrainProps, heroTrain.basicTrainProps.position -  mapPos, PLAYER_RAIL_Y);
 
 	SDL_Rect tile;
 
 	for (auto& bullet : bullets) {
 
-		if (bullet != NULL) {
-			tile.x = bullet->position.x - mapPos;
-			tile.y = bullet->position.y;
-			tile.w = 8;
-			tile.h = 8;
+	  tile.x = bullet->position.x - mapPos;
+	  tile.y = bullet->position.y;
+	  tile.w = 8;
+	  tile.h = 8;
 
-			SDL_BlitSurface(shot, NULL, video, &tile);
-		}
+	  SDL_BlitSurface(shot, nullptr, video, &tile);
+
 	}
 
 	SDL_UpdateRect(video, 0, 0, 0, 0);

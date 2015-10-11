@@ -7,8 +7,7 @@ Car::Car( int aHull, int aLength, int aRelativePosition ):
 {}
 
 void Car::update( long step ) {
-
   for ( auto &element : elements ) {
-    element.update( step );
+    element->update( step );
   }
 }
