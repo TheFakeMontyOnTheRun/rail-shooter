@@ -14,7 +14,9 @@ class Drone: public Character {
 public:
 	Drone();
 	virtual ~Drone();
-	virtual int getResId();
+	virtual int getResId() override;
+	virtual void update( long ms ) override;
+	virtual void shoot() override;
 };
 
 #endif /* SRC_DRONE_H_ */

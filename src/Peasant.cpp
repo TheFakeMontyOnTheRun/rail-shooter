@@ -17,3 +17,11 @@ int Peasant::getResId() {
 	return 6;
 }
 
+void Peasant::update( long ms ) {
+
+}
+
+void Peasant::shoot() {
+
+}
+

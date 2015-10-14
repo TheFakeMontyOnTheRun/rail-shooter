@@ -11,4 +11,8 @@ void Car::update( long step ) {
   for ( auto &element : elements ) {
     element->update( step );
   }
+
+  for ( auto& passenger : occupants ) {
+	  passenger->update( step );
+  }
 }

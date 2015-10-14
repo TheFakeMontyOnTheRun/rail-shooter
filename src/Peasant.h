@@ -15,6 +15,8 @@ public:
 	Peasant();
 	virtual ~Peasant();
 	virtual int getResId();
+	virtual void update( long ms ) override;
+	virtual void shoot() override;
 };
 
 #endif /* SRC_PEASANT_H_ */
