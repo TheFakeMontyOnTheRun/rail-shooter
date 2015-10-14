@@ -1,6 +1,7 @@
 #include <vector>
 #include "CarElement.h"
 #include "Turret.h"
+#include "Character.h"
 #include "Car.h"
 #include "CoveredZBorCar.h"
 #include "OpenZBorCar.h"
@@ -15,8 +16,8 @@ basicTrainProps( 30, 0, 8 ) {
 
 
   CarElement *turret = new Turret( 4 );
-  CarElement *turret2 = new Turret( 50 );
-  CarElement *turret3 = new Turret( 25 );
+  CarElement *turret2 = new Turret( 75 );
+  CarElement *turret3 = new Turret( 115 );
  
 
   car2->elements.push_back( turret );
@@ -24,6 +25,6 @@ basicTrainProps( 30, 0, 8 ) {
 
   car->elements.push_back( turret3 );
 
-  basicTrainProps.cars.push_back( car );
   basicTrainProps.cars.push_back( car2 );
+  basicTrainProps.cars.push_back( car );
 }

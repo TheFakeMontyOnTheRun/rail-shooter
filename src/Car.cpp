@@ -1,5 +1,6 @@
 #include <vector>
 #include "CarElement.h"
+#include "Character.h"
 #include "Car.h"
 
 Car::Car( int aHull, int aLength, int aRelativePosition ):

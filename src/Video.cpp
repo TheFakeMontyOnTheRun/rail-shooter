@@ -8,6 +8,7 @@
 
 #include "GroundType.h"
 #include "CarElement.h"
+#include "Character.h"
 #include "Car.h"
 #include "Train.h"
 #include "HeroTrain.h"
@@ -28,8 +29,10 @@ SDL_Surface *zbor2;
 SDL_Surface *bg1;
 SDL_Surface *bg2;
 SDL_Surface *turret;
+SDL_Surface *hero;
+SDL_Surface *drone;
 
-SDL_Surface *res[ 6 ];
+SDL_Surface *res[ 8 ];
 
 void initGraphics() {
 
@@ -37,6 +40,7 @@ void initGraphics() {
 		printf("Erro de SDL...");
 		exit(-1);
 	}
+
 	video = SDL_SetVideoMode(XRES, YRES, 0, SDL_HWSURFACE);
 	shot = IMG_Load("res/misc/shot.png");
 	player = IMG_Load("res/player/wagon.png");
@@ -45,13 +49,17 @@ void initGraphics() {
 	bg1 = IMG_Load("res/scenary/stage1-floor_all.png");
 	bg2 = IMG_Load("res/scenary/stage1-floor_grass.png");
 	turret = IMG_Load( "res/foes/turret.png" );
+	hero = IMG_Load( "res/player/character1.png" );
+	drone = IMG_Load( "res/foes/enemy.png" );
 
 	res[ 0 ] = nullptr;
 	res[ 1 ] = player;
-	res[ 2 ] = zbor1;
-	res[ 3 ] = zbor2;
+	res[ 2 ] = zbor2;
+	res[ 3 ] = zbor1;
 	res[ 4 ] = turret;
 	res[ 5 ] = player;
+	res[ 6 ] = hero;
+	res[ 7 ] = drone;
 }
 
 void sleepForMS(long ms) {
@@ -105,6 +113,15 @@ void drawTrain( Train &train, int pos, int line) {
       tile.y = line;
       tile.h = 15;
       SDL_BlitSurface( asset, nullptr, video, &tile);
+    }
+
+    for ( auto& character : car->occupants ) {
+        asset = res[ character->getResId() ];
+        tile.x = pos + car->position + character->position;
+        tile.w = 30;
+        tile.y = line;
+        tile.h = 15;
+        SDL_BlitSurface( asset, nullptr, video, &tile);
     }
   }
 }

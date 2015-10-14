@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "CarElement.h"
+#include "Character.h"
 #include "Car.h"
 #include "Train.h"
 

@@ -4,6 +4,7 @@
 class Car {
  public:
   std::vector<CarElement*> elements;
+  std::vector<Character*> occupants;
   int hull;
   int length;
   bool hit;
