@@ -52,14 +52,14 @@ void initGraphics() {
 	hero = IMG_Load( "res/player/character1.png" );
 	drone = IMG_Load( "res/foes/enemy.png" );
 
-	res[ 0 ] = nullptr;
-	res[ 1 ] = player;
-	res[ 2 ] = zbor2;
-	res[ 3 ] = zbor1;
-	res[ 4 ] = turret;
-	res[ 5 ] = player;
-	res[ 6 ] = hero;
-	res[ 7 ] = drone;
+	res[ Image::NOTHING	] = nullptr;
+	res[ Image::PLAYER	] = player;
+	res[ Image::ZBOR2	] = zbor2;
+	res[ Image::ZBOR1	] = zbor1;
+	res[ Image::TURRET	] = turret;
+	res[ Image::PLAYER2	] = player;
+	res[ Image::HERO	] = hero;
+	res[ Image::DRONE	] = drone;
 }
 
 void sleepForMS(long ms) {
@@ -105,16 +105,6 @@ void drawTrain( Train &train, int pos, int line) {
     
     SDL_BlitSurface(asset, nullptr, video, &tile);
     
-    for ( auto& carElement : car->elements ) {
-
-      asset = res[ carElement->getResId() ];
-      tile.x = pos + car->position + carElement->position;
-      tile.w = 30;
-      tile.y = line;
-      tile.h = 15;
-      SDL_BlitSurface( asset, nullptr, video, &tile);
-    }
-
     for ( auto& character : car->occupants ) {
         asset = res[ character->getResId() ];
         tile.x = pos + car->position + character->position;
@@ -123,6 +113,16 @@ void drawTrain( Train &train, int pos, int line) {
         tile.h = 15;
         SDL_BlitSurface( asset, nullptr, video, &tile);
     }
+    for ( auto& carElement : car->elements ) {
+
+      asset = res[ carElement->getResId() ];
+      tile.x = pos + car->position + carElement->position;
+      tile.w = 30;
+      tile.y = line + 64;
+      tile.h = 15;
+      SDL_BlitSurface( asset, nullptr, video, &tile);
+    }
+
   }
 }
 

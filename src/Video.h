@@ -7,6 +7,8 @@ const int YRES = 480;
 const int ENEMY_RAIL_Y = 10;
 const int PLAYER_RAIL_Y = 350;
 
+enum Image{ NOTHING, PLAYER, ZBOR1, ZBOR2, TURRET, PLAYER2, HERO, DRONE };
+
 void initGraphics();
 void refreshGraphics();
 void handleEvents();

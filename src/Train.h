@@ -6,7 +6,7 @@ class Train {
   int speed;
   int position;
   int length;
-  std::vector<Car*> cars;
+  std::vector<std::shared_ptr<Car> > cars;
 
   void update( long step );
   Train( int length, int position, int speed );

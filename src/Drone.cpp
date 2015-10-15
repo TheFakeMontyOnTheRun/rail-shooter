@@ -6,9 +6,10 @@
  */
 #include "Character.h"
 #include "Drone.h"
+#include "Video.h"
 
 int Drone::getResId() {
-	return 7;
+	return Image::DRONE;
 }
 
 Drone::Drone() {

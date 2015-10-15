@@ -1,6 +1,7 @@
 #include <vector>
 #include "CarElement.h"
 #include "Turret.h"
+#include "Video.h"
 
 const int HULL = 10;
 const int SIZE = 10;
@@ -10,5 +11,5 @@ Turret::Turret( int aPosition ):
 }
 
 int Turret::getResId() {
-  return 4;
+  return Image::TURRET;
 }

@@ -1,4 +1,5 @@
 #include <vector>
+#include <memory>
 #include "CarElement.h"
 #include "Character.h"
 #include "Car.h"

@@ -3,7 +3,7 @@
 
 class CartCar : public Car {
  public:
-  virtual int getResId();
+  virtual int getResId() override;
   CartCar( int position );
 };
 

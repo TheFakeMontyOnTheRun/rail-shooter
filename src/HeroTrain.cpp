@@ -1,4 +1,5 @@
 #include <vector>
+#include <memory>
 #include "CarElement.h"
 #include "Character.h"
 #include "Car.h"
@@ -9,6 +10,5 @@
 HeroTrain::HeroTrain():
   basicTrainProps(30, 0, 8 ), crew( 1 )
 {
-  CartCar*  car = new CartCar( 0 );
-  basicTrainProps.cars.push_back( car );
+  basicTrainProps.cars.push_back( std::make_shared<CartCar>( 0 ) );
 } 

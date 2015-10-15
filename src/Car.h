@@ -3,8 +3,8 @@
 
 class Car {
  public:
-  std::vector<CarElement*> elements;
-  std::vector<Character*> occupants;
+  std::vector<std::shared_ptr<CarElement>> elements;
+  std::vector<std::shared_ptr<Character>> occupants;
   int hull;
   int length;
   bool hit;

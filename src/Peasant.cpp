@@ -6,6 +6,7 @@
  */
 #include "Character.h"
 #include "Peasant.h"
+#include "Video.h"
 
 Peasant::Peasant() {
 }
@@ -14,7 +15,7 @@ Peasant::~Peasant() {
 }
 
 int Peasant::getResId() {
-	return 6;
+	return Image::HERO;
 }
 
 void Peasant::update( long ms ) {
