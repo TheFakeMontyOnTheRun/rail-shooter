@@ -4,7 +4,7 @@
 class CoveredZBorCar : public Car {
  public:
   virtual int getResId();
-  CoveredZBorCar(int position);
+  CoveredZBorCar( std::shared_ptr<Car::ICarHolder> train, Vec2 position);
 };
 
 #endif

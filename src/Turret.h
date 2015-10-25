@@ -4,7 +4,8 @@
 class Turret : public CarElement{
  public:
   virtual int getResId();
-  Turret( int position );
+  virtual void fire();
+  Turret( std::shared_ptr<CarElement::ICarElementHolder> parent, Vec2 position );
 };
 
 #endif

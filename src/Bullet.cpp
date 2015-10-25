@@ -8,3 +8,11 @@ void Bullet::update( long step ) {
 Bullet::Bullet( const Vec2& aPosition, const Vec2& aSpeed ):
   position( aPosition ), speed( aSpeed ) {
 }
+
+bool Bullet::isValid() {
+  return valid;
+}
+
+void Bullet::hit() {
+  valid = false;
+}

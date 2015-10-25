@@ -1,5 +1,9 @@
 #include <vector>
 #include <memory>
+#include "Vec2.h"
+#include "Explosion.h"
+#include "Bullet.h"
+#include "Area.h"
 #include "CarElement.h"
 #include "Character.h"
 #include "Car.h"
@@ -9,8 +13,8 @@
 const int HULL = 50;
 const int LENGTH = 30;
 
-CoveredZBorCar::CoveredZBorCar( int aPosition ):
-  Car( HULL, LENGTH, aPosition ) {
+CoveredZBorCar::CoveredZBorCar( std::shared_ptr<Car::ICarHolder> aTrain, Vec2 aPosition ):
+  Car( aTrain, HULL, LENGTH, aPosition ) {
 }
 
 int CoveredZBorCar::getResId() {

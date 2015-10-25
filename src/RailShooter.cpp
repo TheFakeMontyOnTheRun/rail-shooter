@@ -4,6 +4,11 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <iostream>
+#include "Vec2.h"
+#include "Explosion.h"
+#include "Bullet.h"
+#include "Area.h"
 #include "GroundType.h"
 #include "CarElement.h"
 #include "Character.h"
@@ -11,16 +16,14 @@
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
-#include "Vec2.h"
-#include "Bullet.h"
-#include "RailShooter.h"
 #include "Background.h"
 #include "Video.h"
+#include "RailShooter.h"
 
 HeroTrain heroTrain;
 VillainTrain villainTrain;
 std::vector<std::shared_ptr<Bullet>> bullets;
-
+std::vector<std::shared_ptr<Explosion>> explosions;
 int mapPos = 0;
 bool quit = false;
 
@@ -32,20 +35,9 @@ void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
 
 void shoot() {
 	for (auto& car : heroTrain.basicTrainProps.cars) {
-		fireBullet(heroTrain.basicTrainProps.position + car->position,
+		fireBullet(heroTrain.basicTrainProps.position.x + car->position.x,
 				PLAYER_RAIL_Y - 5, 1 + heroTrain.basicTrainProps.speed, -7);
 	}
-}
-
-bool isHit(int pos, int line, std::shared_ptr<Car> car, const std::shared_ptr<Bullet> bullet) {
-
-	if (bullet->position.y > line && bullet->position.y < (line + 15)
-			&& bullet->position.x > (car->position + pos)
-			&& bullet->position.x < (car->position + car->length + pos)) {
-		return true;
-	}
-
-	return false;
 }
 
 void destroyBullet(const std::shared_ptr<Bullet> bullet) {
@@ -53,12 +45,12 @@ void destroyBullet(const std::shared_ptr<Bullet> bullet) {
 			bullets.end());
 }
 
-void updateGame() {
+void updateGame( long sleptFor ) {
 
 	std::vector<std::shared_ptr<Bullet>> toDestroy;
 
 	for (auto& bullet : bullets) {
-		bullet->update(100);
+		bullet->update( sleptFor );
 
 		if (bullet->position.y < 0) {
 			toDestroy.push_back(bullet);
@@ -69,42 +61,14 @@ void updateGame() {
 			toDestroy.push_back(bullet);
 			continue;
 		}
-
-		for (auto& car : villainTrain.basicTrainProps.cars) {
-
-			if (car->hull <= 0) {
-				continue;
-			}
-
-			if (isHit(villainTrain.basicTrainProps.position, ENEMY_RAIL_Y, car,
-					bullet)) {
-				car->hit = true;
-				car->hull -= 1;
-				toDestroy.push_back(bullet);
-				fireBullet(
-						villainTrain.basicTrainProps.position + car->position,
-						ENEMY_RAIL_Y + 5, -1, 1);
-				continue;
-			}
-		}
-
-		for (auto& car : heroTrain.basicTrainProps.cars) {
-
-			if (car->hull <= 0) {
-				continue;
-			}
-
-			if (isHit(heroTrain.basicTrainProps.position, PLAYER_RAIL_Y, car,
-					bullet)) {
-				car->hit = true;
-				car->hull -= 1;
-				toDestroy.push_back(bullet);
-			}
-		}
+	}
+	
+	for ( auto& explosion : explosions ) {
+		explosion->update( sleptFor );
 	}
 
-	heroTrain.basicTrainProps.update(100);
-	villainTrain.basicTrainProps.update(100);
+	heroTrain.basicTrainProps.update(sleptFor, bullets, explosions );
+	villainTrain.basicTrainProps.update(sleptFor, bullets, explosions );
 
 	for (auto &bullet : toDestroy) {
 		destroyBullet(bullet);
@@ -118,10 +82,10 @@ int main(int argc, char **argv) {
 
 	quit = false;
 
-	struct timeval timeBefore;
-	struct timeval timeAfter;
-	int slept = 0;
+	timeval timeBefore;
+	timeval timeAfter;
 	long delta;
+	long sleptFor = 0;
 
 	while (!quit) {
 		gettimeofday(&timeBefore, nullptr);
@@ -130,23 +94,26 @@ int main(int argc, char **argv) {
 
 		mapPos += 8;
 		updateTerrain(mapPos);
-		updateGame();
 
 		if (mapPos > TILES_X) {
 			refreshGraphics();
 		}
 
 		gettimeofday(&timeAfter, nullptr);
-		delta = (timeAfter.tv_usec - timeBefore.tv_usec) / 100;
+		delta = (timeAfter.tv_usec - timeBefore.tv_usec) / 1000;
 
 		if (delta < 0) {
 			delta = -delta;
 		}
 
-		if (delta < 50) {
-			sleepForMS(50 - delta);
-			slept++;
+		if (delta < 20 ) {
+			sleptFor = 20 - delta;
+			sleepForMS(sleptFor);
+		} else {
+			sleptFor = 0;
 		}
+
+		updateGame( delta );
 	}
 
 	shutdownGraphics();

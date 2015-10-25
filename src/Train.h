@@ -1,15 +1,18 @@
 #ifndef TRAIN_H
 #define TRAIN_H
 
-class Train {
+const int ENEMY_RAIL_Y = 10;
+const int PLAYER_RAIL_Y = 350;
+
+class Train : public Car::ICarHolder {
  public:
   int speed;
-  int position;
+  Vec2 position{ 0, 0 };
   int length;
   std::vector<std::shared_ptr<Car> > cars;
-
-  void update( long step );
-  Train( int length, int position, int speed );
+  virtual Vec2 getPosition() override;
+  void update( long step, const std::vector< std::shared_ptr<Bullet> >& bullets, const std::vector< std::shared_ptr<Explosion>>& explosions );
+  Train( int length, Vec2 position, int speed );
 };
 
 #endif

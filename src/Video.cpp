@@ -6,6 +6,10 @@
 #include <thread>
 #include <chrono>
 
+#include "Vec2.h"
+#include  "Bullet.h"
+#include "Explosion.h"
+#include "Area.h"
 #include "GroundType.h"
 #include "CarElement.h"
 #include "Character.h"
@@ -13,9 +17,7 @@
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
-#include "Vec2.h"
-#include  "Bullet.h"
-
+#include "Explosion.h"
 #include "Video.h"
 
 #include "Background.h"
@@ -31,8 +33,9 @@ SDL_Surface *bg2;
 SDL_Surface *turret;
 SDL_Surface *hero;
 SDL_Surface *drone;
+SDL_Surface *hit;
 
-SDL_Surface *res[ 8 ];
+SDL_Surface *res[ 9 ];
 
 void initGraphics() {
 
@@ -51,6 +54,7 @@ void initGraphics() {
 	turret = IMG_Load( "res/foes/turret.png" );
 	hero = IMG_Load( "res/player/character1.png" );
 	drone = IMG_Load( "res/foes/enemy.png" );
+	hit = IMG_Load( "res/misc/hit.png" );
 
 	res[ Image::NOTHING	] = nullptr;
 	res[ Image::PLAYER	] = player;
@@ -60,6 +64,7 @@ void initGraphics() {
 	res[ Image::PLAYER2	] = player;
 	res[ Image::HERO	] = hero;
 	res[ Image::DRONE	] = drone;
+	res[ Image::HIT		] = hit;
 }
 
 void sleepForMS(long ms) {
@@ -97,32 +102,42 @@ void drawTrain( Train &train, int pos, int line) {
 
     asset = res[ car->getResId() ];
     
-    tile.x = pos + car->position;
+    tile.x = pos + car->position.x;
     tile.w = car->length;
     tile.y = line;
     tile.h = 15;
-    car->hit = false;
-    
     SDL_BlitSurface(asset, nullptr, video, &tile);
     
     for ( auto& character : car->occupants ) {
+		
+		if ( character->health <= 0 ) {
+			continue;
+		}
+
+		
         asset = res[ character->getResId() ];
-        tile.x = pos + car->position + character->position;
+        tile.x = pos + car->position.x + character->position.x;
         tile.w = 30;
         tile.y = line;
         tile.h = 15;
-        SDL_BlitSurface( asset, nullptr, video, &tile);
+        SDL_BlitSurface( asset, nullptr, video, &tile);		
     }
+	
+	Vec2 carPosition = car->getPositionForCarElement();
+	
     for ( auto& carElement : car->elements ) {
 
+		if ( carElement->hull <= 0 ) {
+			continue;
+		}
+
       asset = res[ carElement->getResId() ];
-      tile.x = pos + car->position + carElement->position;
+      tile.x = pos + car->position.x + carElement->position.x;
       tile.w = 30;
       tile.y = line + 64;
       tile.h = 15;
       SDL_BlitSurface( asset, nullptr, video, &tile);
     }
-
   }
 }
 
@@ -130,13 +145,17 @@ void refreshGraphics() {
 
 	drawBackground();
 
-	drawTrain(villainTrain.basicTrainProps, villainTrain.basicTrainProps.position - mapPos, ENEMY_RAIL_Y);
+	drawTrain(villainTrain.basicTrainProps, villainTrain.basicTrainProps.position.x - mapPos, ENEMY_RAIL_Y);
 
-	drawTrain(heroTrain.basicTrainProps, heroTrain.basicTrainProps.position -  mapPos, PLAYER_RAIL_Y);
+	drawTrain(heroTrain.basicTrainProps, heroTrain.basicTrainProps.position.x -  mapPos, PLAYER_RAIL_Y);
 
 	SDL_Rect tile;
 
 	for (auto& bullet : bullets) {
+
+		if ( !bullet->isValid() ) {
+			continue;
+		}
 
 	  tile.x = bullet->position.x - mapPos;
 	  tile.y = bullet->position.y;
@@ -144,7 +163,20 @@ void refreshGraphics() {
 	  tile.h = 8;
 
 	  SDL_BlitSurface(shot, nullptr, video, &tile);
+	}
 
+	for (auto& explosion : explosions) {
+
+		if ( !explosion->isValid() ) {
+			continue;
+		}
+
+	  tile.x = explosion->position.x - mapPos;
+	  tile.y = explosion->position.y;
+	  tile.w = 8;
+	  tile.h = 8;
+
+	  SDL_BlitSurface(hit, nullptr, video, &tile);
 	}
 
 	SDL_UpdateRect(video, 0, 0, 0, 0);

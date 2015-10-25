@@ -8,5 +8,6 @@ extern int mapPos;
 extern bool quit;
 
 void shoot();
+void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed);
 
 #endif
