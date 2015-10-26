@@ -13,10 +13,11 @@
 const int HULL = 50;
 const int LENGTH = 30;
 
-CoveredZBorCar::CoveredZBorCar( std::shared_ptr<Car::Holder> aTrain, Vec2 aPosition ):
-  Car( aTrain, HULL, LENGTH, aPosition ) {
+CoveredZBorCar::CoveredZBorCar(std::shared_ptr<Car::Holder> aTrain,
+		Vec2 aPosition) :
+		Car(aTrain, HULL, LENGTH, aPosition) {
 }
 
 int CoveredZBorCar::getResId() {
-  return Image::ZBOR2;
+	return Image::ZBOR2;
 }

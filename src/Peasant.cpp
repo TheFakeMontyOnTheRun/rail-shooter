@@ -14,8 +14,8 @@
 #include "Peasant.h"
 #include "Video.h"
 
-Peasant::Peasant( std::shared_ptr<Character::Holder> aPlace ) :
-	Character( aPlace, Area( Vec2(0,0), Vec2(25, 50) ) ) {
+Peasant::Peasant(std::shared_ptr<Character::Holder> aPlace) :
+		Character(aPlace, Area(Vec2(0, 0), Vec2(25, 50))) {
 }
 
 Peasant::~Peasant() {
@@ -25,7 +25,9 @@ int Peasant::getResId() {
 	return Image::HERO;
 }
 
-void Peasant::update( long step, const std::vector< std::shared_ptr<Bullet> >& bullets, const std::vector< std::shared_ptr<Explosion>>& explosions ) {
+void Peasant::update(long step,
+		const std::vector<std::shared_ptr<Bullet> >& bullets,
+		const std::vector<std::shared_ptr<Explosion>>& explosions) {
 }
 
 void Peasant::fire() {

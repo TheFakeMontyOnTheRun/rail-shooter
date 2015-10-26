@@ -45,12 +45,12 @@ void destroyBullet(const std::shared_ptr<Bullet> bullet) {
 			bullets.end());
 }
 
-void updateGame( long sleptFor ) {
+void updateGame(long sleptFor) {
 
 	std::vector<std::shared_ptr<Bullet>> toDestroy;
 
 	for (auto& bullet : bullets) {
-		bullet->update( sleptFor );
+		bullet->update(sleptFor);
 
 		if (bullet->position.y < 0) {
 			toDestroy.push_back(bullet);
@@ -62,13 +62,13 @@ void updateGame( long sleptFor ) {
 			continue;
 		}
 	}
-	
-	for ( auto& explosion : explosions ) {
-		explosion->update( sleptFor );
+
+	for (auto& explosion : explosions) {
+		explosion->update(sleptFor);
 	}
 
-	heroTrain.basicTrainProps.update(sleptFor, bullets, explosions );
-	villainTrain.basicTrainProps.update(sleptFor, bullets, explosions );
+	heroTrain.basicTrainProps.update(sleptFor, bullets, explosions);
+	villainTrain.basicTrainProps.update(sleptFor, bullets, explosions);
 
 	for (auto &bullet : toDestroy) {
 		destroyBullet(bullet);
@@ -106,14 +106,14 @@ int main(int argc, char **argv) {
 			delta = -delta;
 		}
 
-		if (delta < 20 ) {
+		if (delta < 20) {
 			sleptFor = 20 - delta;
 			sleepForMS(sleptFor);
 		} else {
 			sleptFor = 0;
 		}
 
-		updateGame( delta );
+		updateGame(delta);
 	}
 
 	shutdownGraphics();

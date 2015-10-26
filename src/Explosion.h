@@ -2,14 +2,14 @@
 #define EXPLOSION_H
 
 class Explosion {
-	public:
-	
+public:
+
 	long timeToExpire;
 	Vec2 position;
-	void update( long ms );
+	void update(long ms);
 	bool isValid();
-	Explosion( long timeToExpire, const Vec2& position );	
+	Explosion(long timeToExpire, const Vec2& position);
 };
 
-extern std::vector< std::shared_ptr< Explosion > > explosions;
+extern std::vector<std::shared_ptr<Explosion> > explosions;
 #endif

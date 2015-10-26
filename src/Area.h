@@ -10,10 +10,10 @@
 
 class Area {
 public:
-	Vec2 pos{ 0, 0 };
-	Vec2 delta{ 1, 1 };
-	bool contains( const Vec2& p ) const;
-	Area( const Vec2& pos, const Vec2& delta );
+	Vec2 pos { 0, 0 };
+	Vec2 delta { 1, 1 };
+	bool contains(const Vec2& p) const;
+	Area(const Vec2& pos, const Vec2& delta);
 
 	virtual ~Area();
 };

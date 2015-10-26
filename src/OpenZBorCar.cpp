@@ -14,30 +14,33 @@
 const int HULL = 40;
 const int LENGTH = 30;
 
-OpenZBorCar::OpenZBorCar( std::shared_ptr<Car::Holder> aTrain, Vec2 aPosition ):
-  Car( aTrain, HULL, LENGTH, aPosition ) {
+OpenZBorCar::OpenZBorCar(std::shared_ptr<Car::Holder> aTrain, Vec2 aPosition) :
+		Car(aTrain, HULL, LENGTH, aPosition) {
 
-	std::shared_ptr<Character::Holder> holder = std::shared_ptr<Character::Holder>( this );
+	std::shared_ptr<Character::Holder> holder = std::shared_ptr
+			< Character::Holder > (this);
 
-	drone1 = std::make_shared<Drone>( holder );
+	drone1 = std::make_shared < Drone > (holder);
 	drone1->position.x = 140;
-	occupants.push_back( drone1 );
-	drone2 = std::make_shared<Drone>( holder );
+	occupants.push_back(drone1);
+	drone2 = std::make_shared < Drone > (holder);
 	drone2->position.x = 200;
-	occupants.push_back( drone2 );
+	occupants.push_back(drone2);
 }
 
-void OpenZBorCar::update( long ms, const std::vector< std::shared_ptr<Bullet> >& bullets, const std::vector< std::shared_ptr<Explosion>>& explosions ) {
-	Car::update( ms, bullets, explosions );
-	
+void OpenZBorCar::update(long ms,
+		const std::vector<std::shared_ptr<Bullet> >& bullets,
+		const std::vector<std::shared_ptr<Explosion>>& explosions) {
+	Car::update(ms, bullets, explosions);
+
 	acc += ms;
 
-	if ( acc >= 1000 ) {
+	if (acc >= 1000) {
 		acc = 0;
 		Car::fire();
 	}
 }
 
 int OpenZBorCar::getResId() {
-  return Image::ZBOR1;
+	return Image::ZBOR1;
 }

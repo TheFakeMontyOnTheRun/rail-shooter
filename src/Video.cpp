@@ -35,7 +35,7 @@ SDL_Surface *hero;
 SDL_Surface *drone;
 SDL_Surface *hit;
 
-SDL_Surface *res[ 9 ];
+SDL_Surface *res[9];
 
 void initGraphics() {
 
@@ -51,24 +51,24 @@ void initGraphics() {
 	zbor2 = IMG_Load("res/foes/zbor2.png");
 	bg1 = IMG_Load("res/scenary/stage1-floor_all.png");
 	bg2 = IMG_Load("res/scenary/stage1-floor_grass.png");
-	turret = IMG_Load( "res/foes/turret.png" );
-	hero = IMG_Load( "res/player/character1.png" );
-	drone = IMG_Load( "res/foes/enemy.png" );
-	hit = IMG_Load( "res/misc/hit.png" );
+	turret = IMG_Load("res/foes/turret.png");
+	hero = IMG_Load("res/player/character1.png");
+	drone = IMG_Load("res/foes/enemy.png");
+	hit = IMG_Load("res/misc/hit.png");
 
-	res[ Image::NOTHING	] = nullptr;
-	res[ Image::PLAYER	] = player;
-	res[ Image::ZBOR2	] = zbor2;
-	res[ Image::ZBOR1	] = zbor1;
-	res[ Image::TURRET	] = turret;
-	res[ Image::PLAYER2	] = player;
-	res[ Image::HERO	] = hero;
-	res[ Image::DRONE	] = drone;
-	res[ Image::HIT		] = hit;
+	res[Image::NOTHING] = nullptr;
+	res[Image::PLAYER] = player;
+	res[Image::ZBOR2] = zbor2;
+	res[Image::ZBOR1] = zbor1;
+	res[Image::TURRET] = turret;
+	res[Image::PLAYER2] = player;
+	res[Image::HERO] = hero;
+	res[Image::DRONE] = drone;
+	res[Image::HIT] = hit;
 }
 
 void sleepForMS(long ms) {
-	std::this_thread::sleep_for(std::chrono::milliseconds( ms ));
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
 void drawBackground() {
@@ -85,7 +85,9 @@ void drawBackground() {
 		for (d = 0; d < TILES_Y; ++d) {
 			tile.x = (c * 64) - (mapPos % 64);
 			tile.y = d * 64;
-			SDL_BlitSurface( ( columns[ (c + mapPos ) % TILES_X ].tiles[ d ] == &ice ) ? bg1 : bg1, nullptr, video, &tile);
+			SDL_BlitSurface(
+					(columns[(c + mapPos) % TILES_X].tiles[d] == &ice) ?
+							bg1 : bg1, nullptr, video, &tile);
 		}
 	}
 }
@@ -94,87 +96,88 @@ void clearGraphics() {
 	SDL_FillRect(video, nullptr, 0);
 }
 
-void drawTrain( Train &train, int pos, int line) {
-  
-  SDL_Rect tile;
-  SDL_Surface *asset;
-  for (auto& car : train.cars) {
+void drawTrain(Train &train, int pos, int line) {
 
-    asset = res[ car->getResId() ];
-    
-    tile.x = pos + car->position.x;
-    tile.w = car->length;
-    tile.y = line;
-    tile.h = 15;
-    SDL_BlitSurface(asset, nullptr, video, &tile);
-    
-    for ( auto& character : car->occupants ) {
-		
-		if ( character->health <= 0 ) {
-			continue;
+	SDL_Rect tile;
+	SDL_Surface *asset;
+	for (auto& car : train.cars) {
+
+		asset = res[car->getResId()];
+
+		tile.x = pos + car->position.x;
+		tile.w = car->length;
+		tile.y = line;
+		tile.h = 15;
+		SDL_BlitSurface(asset, nullptr, video, &tile);
+
+		for (auto& character : car->occupants) {
+
+			if (character->health <= 0) {
+				continue;
+			}
+
+			asset = res[character->getResId()];
+			tile.x = pos + car->position.x + character->position.x;
+			tile.w = 30;
+			tile.y = line;
+			tile.h = 15;
+			SDL_BlitSurface(asset, nullptr, video, &tile);
 		}
 
-		
-        asset = res[ character->getResId() ];
-        tile.x = pos + car->position.x + character->position.x;
-        tile.w = 30;
-        tile.y = line;
-        tile.h = 15;
-        SDL_BlitSurface( asset, nullptr, video, &tile);		
-    }
-	
-    for ( auto& carElement : car->elements ) {
+		for (auto& carElement : car->elements) {
 
-		if ( carElement->hull <= 0 ) {
-			continue;
+			if (carElement->hull <= 0) {
+				continue;
+			}
+
+			asset = res[carElement->getResId()];
+			tile.x = pos + car->position.x + carElement->position.x;
+			tile.w = 30;
+			tile.y = line + 64;
+			tile.h = 15;
+			SDL_BlitSurface(asset, nullptr, video, &tile);
 		}
-
-      asset = res[ carElement->getResId() ];
-      tile.x = pos + car->position.x + carElement->position.x;
-      tile.w = 30;
-      tile.y = line + 64;
-      tile.h = 15;
-      SDL_BlitSurface( asset, nullptr, video, &tile);
-    }
-  }
+	}
 }
 
 void refreshGraphics() {
 
 	drawBackground();
 
-	drawTrain(villainTrain.basicTrainProps, villainTrain.basicTrainProps.position.x - mapPos, ENEMY_RAIL_Y);
+	drawTrain(villainTrain.basicTrainProps,
+			villainTrain.basicTrainProps.position.x - mapPos, ENEMY_RAIL_Y);
 
-	drawTrain(heroTrain.basicTrainProps, heroTrain.basicTrainProps.position.x -  mapPos, PLAYER_RAIL_Y);
+	drawTrain(heroTrain.basicTrainProps,
+			heroTrain.basicTrainProps.position.x - mapPos, PLAYER_RAIL_Y);
 
 	SDL_Rect tile;
 
 	for (auto& bullet : bullets) {
 
-		if ( !bullet->isValid() ) {
+		if (!bullet->isValid()) {
 			continue;
 		}
 
-	  tile.x = bullet->position.x - mapPos;
-	  tile.y = bullet->position.y;
-	  tile.w = 8;
-	  tile.h = 8;
+		tile.x = bullet->position.x - mapPos;
+		tile.y = bullet->position.y;
+		tile.w = 8;
+		tile.h = 8;
 
-	  SDL_BlitSurface(shot, nullptr, video, &tile);
+		SDL_BlitSurface(shot, nullptr, video, &tile);
 	}
 
 	for (auto& explosion : explosions) {
 
-		if ( !explosion->isValid() ) {
+		if (!explosion->isValid()) {
 			continue;
 		}
 
-	  tile.x = explosion->position.x - mapPos;
-	  tile.y = explosion->position.y;
-	  tile.w = 8;
-	  tile.h = 8;
+		tile.x = explosion->position.x - mapPos;
+		tile.y = explosion->position.y;
+		tile.w = 8;
+		tile.h = 8;
 
-	  SDL_BlitSurface(hit, nullptr, video, &tile);
+		SDL_BlitSurface(hit, nullptr, video, &tile);
 	}
 
 	SDL_UpdateRect(video, 0, 0, 0, 0);
@@ -183,7 +186,7 @@ void refreshGraphics() {
 void handleEvents() {
 	SDL_Event events;
 
-	memset( &events, 0, sizeof( events ) );
+	memset(&events, 0, sizeof(events));
 
 	SDL_PollEvent(&events);
 
@@ -199,7 +202,6 @@ void handleEvents() {
 		if (events.key.keysym.sym == SDLK_s) {
 			villainTrain.basicTrainProps.speed += 1;
 		}
-
 
 		if (events.key.keysym.sym == SDLK_LEFT) {
 			heroTrain.basicTrainProps.speed -= 1;

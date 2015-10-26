@@ -12,10 +12,12 @@
 
 class Peasant: public Character {
 public:
-	Peasant( std::shared_ptr<Character::Holder> place );
+	Peasant(std::shared_ptr<Character::Holder> place);
 	virtual ~Peasant();
 	virtual int getResId();
-	virtual void update( long step, const std::vector< std::shared_ptr<Bullet> >& bullets, const std::vector< std::shared_ptr<Explosion>>& explosions ) override;
+	virtual void update(long step,
+			const std::vector<std::shared_ptr<Bullet> >& bullets,
+			const std::vector<std::shared_ptr<Explosion>>& explosions) override;
 	virtual void fire() override;
 };
 

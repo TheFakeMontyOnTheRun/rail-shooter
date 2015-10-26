@@ -6,5 +6,4 @@ public:
 	int resId;
 };
 
-
 #endif
