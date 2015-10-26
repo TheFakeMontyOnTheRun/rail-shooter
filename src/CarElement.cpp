@@ -6,8 +6,8 @@
 #include "Area.h"
 #include "CarElement.h"
 
-CarElement::CarElement(std::shared_ptr<CarElement::Holder> aParent, int aHull,
-		int aLength, Vec2 aRelativePosition, const Area& aHitArea) :
+CarElement::CarElement(const std::shared_ptr<CarElement::Holder>& aParent, int aHull,
+		int aLength, const Vec2& aRelativePosition, const Area& aHitArea) :
 		hit(false), parent(aParent), hull(aHull), length(aLength), position(
 				aRelativePosition), hitArea(aHitArea) {
 }

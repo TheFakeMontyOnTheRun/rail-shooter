@@ -12,7 +12,7 @@
 
 class Peasant: public Character {
 public:
-	Peasant(std::shared_ptr<Character::Holder> place);
+	Peasant(const std::shared_ptr<Character::Holder>& place);
 	virtual ~Peasant();
 	virtual int getResId();
 	virtual void update(long step,

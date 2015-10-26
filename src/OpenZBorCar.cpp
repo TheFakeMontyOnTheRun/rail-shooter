@@ -14,7 +14,7 @@
 const int HULL = 40;
 const int LENGTH = 30;
 
-OpenZBorCar::OpenZBorCar(std::shared_ptr<Car::Holder> aTrain, Vec2 aPosition) :
+OpenZBorCar::OpenZBorCar(const std::shared_ptr<Car::Holder>& aTrain, const Vec2& aPosition) :
 		Car(aTrain, HULL, LENGTH, aPosition) {
 
 	std::shared_ptr<Character::Holder> holder = std::shared_ptr

@@ -30,7 +30,7 @@ public:
 	Vec2 position { 0, 0 };
 	int health { 25 };
 	int power { 10 };
-	Character(std::shared_ptr<Holder> place, const Area& hitArea);
+	Character(const std::shared_ptr<Holder>& place, const Area& hitArea);
 	virtual void fire();
 	virtual ~Character();
 };

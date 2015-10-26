@@ -23,7 +23,7 @@ public:
 			const std::vector<std::shared_ptr<Bullet> >& bullets,
 			const std::vector<std::shared_ptr<Explosion>>& explosions);
 
-	CarElement(std::shared_ptr<CarElement::Holder> parent, int hull, int length,
-			Vec2 relativePosition, const Area& hitArea);
+	CarElement(const std::shared_ptr<CarElement::Holder>& parent, int hull, int length,
+			const Vec2& relativePosition, const Area& hitArea);
 };
 #endif

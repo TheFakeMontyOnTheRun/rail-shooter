@@ -24,6 +24,6 @@ public:
 			const std::vector<std::shared_ptr<Explosion>>& explosions);
 	virtual Vec2 getPositionForCharacter() override;
 	virtual Vec2 getPositionForCarElement() override;
-	Car(std::shared_ptr<Holder> train, int hull, int length, Vec2 position);
+	Car(const std::shared_ptr<Holder>& train, int hull, int length, const Vec2& position);
 };
 #endif

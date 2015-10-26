@@ -14,7 +14,7 @@
 const int HULL = 10;
 const int LENGTH = 15;
 
-CartCar::CartCar(std::shared_ptr<Car::Holder> train, Vec2 aPosition) :
+CartCar::CartCar(const std::shared_ptr<Car::Holder>& train, const Vec2& aPosition) :
 		Car(train, HULL, LENGTH, aPosition) {
 
 	auto holder = std::shared_ptr < Character::Holder > (this);

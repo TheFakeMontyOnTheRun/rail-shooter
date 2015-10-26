@@ -11,7 +11,7 @@ public:
 	virtual void update(long step,
 			const std::vector<std::shared_ptr<Bullet> >& bullets,
 			const std::vector<std::shared_ptr<Explosion>>& explosions);
-	OpenZBorCar(std::shared_ptr<Car::Holder> train, Vec2 position);
+	OpenZBorCar(const std::shared_ptr<Car::Holder>& train, const Vec2& position);
 };
 
 #endif

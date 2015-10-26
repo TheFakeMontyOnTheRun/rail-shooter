@@ -9,7 +9,7 @@
 #include "Car.h"
 #include "Train.h"
 
-Train::Train(int aLength, Vec2 aRelativePosition, int aSpeed) :
+Train::Train(int aLength, const Vec2& aRelativePosition, int aSpeed) :
 		length(aLength), position(aRelativePosition), speed(aSpeed) {
 }
 

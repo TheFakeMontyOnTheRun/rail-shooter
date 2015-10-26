@@ -96,7 +96,7 @@ void clearGraphics() {
 	SDL_FillRect(video, nullptr, 0);
 }
 
-void drawTrain(Train &train, int pos, int line) {
+void drawTrain(const Train &train, int pos, int line) {
 
 	SDL_Rect tile;
 	SDL_Surface *asset;

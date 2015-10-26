@@ -14,7 +14,7 @@ public:
 	virtual Vec2 getPosition() override;
 	void update(long step, const std::vector<std::shared_ptr<Bullet> >& bullets,
 			const std::vector<std::shared_ptr<Explosion>>& explosions);
-	Train(int length, Vec2 position, int speed);
+	Train(int length, const Vec2& position, int speed);
 };
 
 #endif
