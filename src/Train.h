@@ -15,6 +15,7 @@ public:
 	void update(long step, const std::vector<std::shared_ptr<Bullet> >& bullets,
 			const std::vector<std::shared_ptr<Explosion>>& explosions);
 	Train(int length, const Vec2& position, int speed);
+	virtual ~Train();
 };
 
 #endif

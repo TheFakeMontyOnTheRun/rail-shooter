@@ -10,6 +10,6 @@ public:
 	bool isValid();
 	Explosion(long timeToExpire, const Vec2& position);
 };
-
+//ugly hack
 extern std::vector<std::shared_ptr<Explosion> > explosions;
 #endif

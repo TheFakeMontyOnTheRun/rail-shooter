@@ -12,6 +12,7 @@ public:
 			const std::vector<std::shared_ptr<Bullet> >& bullets,
 			const std::vector<std::shared_ptr<Explosion>>& explosions);
 	OpenZBorCar(const std::shared_ptr<Car::Holder>& train, const Vec2& position);
+	~OpenZBorCar();
 };
 
 #endif

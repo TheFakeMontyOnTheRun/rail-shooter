@@ -17,15 +17,15 @@ const int LENGTH = 30;
 OpenZBorCar::OpenZBorCar(const std::shared_ptr<Car::Holder>& aTrain, const Vec2& aPosition) :
 		Car(aTrain, HULL, LENGTH, aPosition) {
 
-	std::shared_ptr<Character::Holder> holder = std::shared_ptr
-			< Character::Holder > (this);
+	// std::shared_ptr<Character::Holder> holder = std::shared_ptr
+	// 		< Character::Holder > (this);
 
-	drone1 = std::make_shared < Drone > (holder);
-	drone1->position.x = 140;
-	occupants.push_back(drone1);
-	drone2 = std::make_shared < Drone > (holder);
-	drone2->position.x = 200;
-	occupants.push_back(drone2);
+	// drone1 = std::make_shared < Drone > (holder);
+	// drone1->position.x = 140;
+	// occupants.push_back(drone1);
+	// drone2 = std::make_shared < Drone > (holder);
+	// drone2->position.x = 200;
+	// occupants.push_back(drone2);
 }
 
 void OpenZBorCar::update(long ms,
@@ -43,4 +43,8 @@ void OpenZBorCar::update(long ms,
 
 int OpenZBorCar::getResId() {
 	return Image::ZBOR1;
+}
+
+OpenZBorCar::~OpenZBorCar() {
+	
 }

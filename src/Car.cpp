@@ -60,3 +60,7 @@ Vec2 Car::getPosition() {
 
 	return toReturn;
 }
+
+Car::~Car() {
+	
+}

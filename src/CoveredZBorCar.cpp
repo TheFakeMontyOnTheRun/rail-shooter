@@ -21,3 +21,7 @@ CoveredZBorCar::CoveredZBorCar(const std::shared_ptr<Car::Holder>& aTrain,
 int CoveredZBorCar::getResId() {
 	return Image::ZBOR2;
 }
+
+CoveredZBorCar::~CoveredZBorCar() {
+	
+}

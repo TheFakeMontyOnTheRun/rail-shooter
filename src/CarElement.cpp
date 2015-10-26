@@ -38,3 +38,6 @@ void CarElement::update(long step,
 
 void CarElement::fire() {
 }
+
+CarElement::~CarElement() {
+}

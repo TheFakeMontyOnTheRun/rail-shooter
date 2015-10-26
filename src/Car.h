@@ -25,5 +25,6 @@ public:
 	virtual Vec2 getPositionForCharacter() override;
 	virtual Vec2 getPositionForCarElement() override;
 	Car(const std::shared_ptr<Holder>& train, int hull, int length, const Vec2& position);
+	virtual ~Car();
 };
 #endif

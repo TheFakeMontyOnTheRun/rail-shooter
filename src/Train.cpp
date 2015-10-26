@@ -27,3 +27,7 @@ void Train::update(long step,
 Vec2 Train::getPosition() {
 	return Vec2(position.x, position.y);
 }
+
+Train::~Train() {
+	
+}

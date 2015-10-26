@@ -25,5 +25,7 @@ public:
 
 	CarElement(const std::shared_ptr<CarElement::Holder>& parent, int hull, int length,
 			const Vec2& relativePosition, const Area& hitArea);
+			
+	virtual ~CarElement();
 };
 #endif

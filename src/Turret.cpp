@@ -30,5 +30,9 @@ void Turret::fire() {
 	Vec2 pos = parent->getPositionForCarElement();
 	pos += Vec2(position.x, 0);
 
-	fireBullet(pos.x, pos.y + 5, 0, 5);
+	fireBullet(pos.x, pos.y + 64 + 50, 0, 5);
+}
+
+Turret::~Turret() {
+	
 }
