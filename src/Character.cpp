@@ -12,7 +12,7 @@
 #include "Area.h"
 #include "Character.h"
 
-Character::Character( std::shared_ptr<Character::ICharacterHolder> aPlace, const Area& aHitArea ) : 
+Character::Character( std::shared_ptr<Character::Holder> aPlace, const Area& aHitArea ) : 
 place( aPlace ), hitArea( aHitArea ) {
 }
 

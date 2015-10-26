@@ -4,8 +4,9 @@
 class Bullet {
   bool valid{ true };
  public:
-  Vec2 speed;
   Vec2 position;
+  Vec2 speed;
+
   bool isValid();
   void hit();
 

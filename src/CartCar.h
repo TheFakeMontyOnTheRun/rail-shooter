@@ -4,7 +4,7 @@
 class CartCar : public Car {
  public:
   virtual int getResId() override;
-  CartCar( std::shared_ptr<Car::ICarHolder> train, Vec2 position );
+  CartCar( std::shared_ptr<Car::Holder> train, Vec2 position );
 };
 
 #endif

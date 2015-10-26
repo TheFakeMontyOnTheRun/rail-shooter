@@ -9,7 +9,7 @@ private:
  public:
   virtual int getResId();
   virtual void update( long step, const std::vector< std::shared_ptr<Bullet> >& bullets, const std::vector< std::shared_ptr<Explosion>>& explosions );
-  OpenZBorCar( std::shared_ptr< Car::ICarHolder> train, Vec2 position );
+  OpenZBorCar( std::shared_ptr< Car::Holder> train, Vec2 position );
 };
 
 #endif

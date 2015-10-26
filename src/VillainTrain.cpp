@@ -17,7 +17,7 @@
 VillainTrain::VillainTrain():
 basicTrainProps( 30, Vec2( 0, ENEMY_RAIL_Y ), 8 ) {
 
-	auto holder = std::shared_ptr<Car::ICarHolder>( &basicTrainProps );
+	auto holder = std::shared_ptr<Car::Holder>( &basicTrainProps );
 
   auto car = std::make_shared<CoveredZBorCar>( holder, Vec2( 0 , 0 ) );
   auto car2 = std::make_shared<OpenZBorCar>( holder, Vec2( 300, 0 ) );

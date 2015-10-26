@@ -14,7 +14,7 @@
 #include "Peasant.h"
 #include "Video.h"
 
-Peasant::Peasant( std::shared_ptr<Character::ICharacterHolder> aPlace ) :
+Peasant::Peasant( std::shared_ptr<Character::Holder> aPlace ) :
 	Character( aPlace, Area( Vec2(0,0), Vec2(25, 50) ) ) {
 }
 

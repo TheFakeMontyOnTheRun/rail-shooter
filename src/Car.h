@@ -1,17 +1,17 @@
 #ifndef CAR_H
 #define CAR_H
 
-class Car : public CarElement::ICarElementHolder, public Character::ICharacterHolder {
+class Car : public CarElement::Holder, public Character::Holder {
 private:
 	Vec2 getPosition();
 public:
 
-	class ICarHolder {
+	class Holder {
 	public:
 		virtual Vec2 getPosition() = 0;
 	};
 
-	std::shared_ptr<ICarHolder> train;
+	std::shared_ptr<Holder> train;
   std::vector<std::shared_ptr<CarElement>> elements;
   std::vector<std::shared_ptr<Character>> occupants;
   int hull;
@@ -22,6 +22,6 @@ public:
   virtual void update( long step, const std::vector< std::shared_ptr<Bullet> >& bullets, const std::vector< std::shared_ptr<Explosion>>& explosions );
   virtual Vec2 getPositionForCharacter() override;
   virtual Vec2 getPositionForCarElement() override;
-  Car( std::shared_ptr<ICarHolder> train, int hull, int length, Vec2 position );
+  Car( std::shared_ptr<Holder> train, int hull, int length, Vec2 position );
 };
 #endif

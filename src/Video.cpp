@@ -123,8 +123,6 @@ void drawTrain( Train &train, int pos, int line) {
         SDL_BlitSurface( asset, nullptr, video, &tile);		
     }
 	
-	Vec2 carPosition = car->getPositionForCarElement();
-	
     for ( auto& carElement : car->elements ) {
 
 		if ( carElement->hull <= 0 ) {

@@ -8,7 +8,7 @@
 #include "Character.h"
 #include "Car.h"
 
-Car::Car( std::shared_ptr<Car::ICarHolder> aTrain, int aHull, int aLength, Vec2 aRelativePosition ):
+Car::Car( std::shared_ptr<Car::Holder> aTrain, int aHull, int aLength, Vec2 aRelativePosition ):
   train( aTrain ), hull( aHull ), length( aLength ), position( aRelativePosition )
 {}
 

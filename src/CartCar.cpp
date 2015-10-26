@@ -14,10 +14,10 @@
 const int HULL = 10;
 const int LENGTH = 15;
 
-CartCar::CartCar( std::shared_ptr<Car::ICarHolder> train, Vec2 aPosition ):
+CartCar::CartCar( std::shared_ptr<Car::Holder> train, Vec2 aPosition ):
   Car( train, HULL, LENGTH, aPosition ) {
 
-	auto holder = std::shared_ptr<Character::ICharacterHolder>( this);
+	auto holder = std::shared_ptr<Character::Holder>( this);
 	auto sergei = std::make_shared<Peasant>( holder );
 	occupants.push_back( sergei );
 }

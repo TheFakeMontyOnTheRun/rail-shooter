@@ -27,7 +27,7 @@ int Drone::getResId() {
 	return Image::DRONE;
 }
 
-Drone::Drone( std::shared_ptr<Character::ICharacterHolder> aPlace ): 
+Drone::Drone( std::shared_ptr<Character::Holder> aPlace ): 
 Character(aPlace, Area( Vec2(0,0), Vec2(50, 60) )) {
 }
 

@@ -10,7 +10,7 @@
 
 class Drone: public Character {
 public:
-	Drone( std::shared_ptr<Character::ICharacterHolder> parent );
+	Drone( std::shared_ptr<Character::Holder> parent );
 	virtual ~Drone();
 	virtual int getResId() override;
 	virtual void update( long step, const std::vector< std::shared_ptr<Bullet> >& bullets, const std::vector< std::shared_ptr<Explosion>>& explosions ) override;

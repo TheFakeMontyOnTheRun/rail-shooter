@@ -11,12 +11,12 @@
 class Character {
 public:
 
-	class ICharacterHolder {
+	class Holder {
 	public:
 		virtual Vec2 getPositionForCharacter() = 0;
 	};
 
-	std::shared_ptr<Character::ICharacterHolder> place;
+	std::shared_ptr<Character::Holder> place;
 
 	enum class State{ AIMING, SHOOTING, WALKING_LEFT, WALKING_RIGHT };
 	Area hitArea{ Vec2{0,0}, Vec2{0,0} };
@@ -26,7 +26,7 @@ public:
 	Vec2 position{ 0, 0 };
 	int health{ 25 };
 	int power{ 10 };
-	Character( std::shared_ptr<ICharacterHolder> place, const Area& hitArea );
+	Character( std::shared_ptr<Holder> place, const Area& hitArea );
 	virtual void fire();
 	virtual ~Character();
 };
