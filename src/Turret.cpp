@@ -1,4 +1,3 @@
-#include <memory>
 #include <vector>
 #include "Vec2.h"
 #include "Explosion.h"
@@ -17,7 +16,7 @@
 const int HULL = 10;
 const int SIZE = 10;
 
-Turret::Turret(const std::shared_ptr<CarElement::Holder>& parent, const Vec2& aPosition) :
+Turret::Turret(const CarElement::Holder& parent, const Vec2& aPosition) :
 		CarElement(parent, HULL, SIZE, aPosition,
 				Area(Vec2(0, 0), Vec2(55, 55))) {
 }

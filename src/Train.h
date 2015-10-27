@@ -10,10 +10,10 @@ public:
 	Vec2 position { 0, 0 };
 	int speed;
 
-	std::vector<std::shared_ptr<Car> > cars;
-	virtual Vec2 getPosition() override;
-	void update(long step, const std::vector<std::shared_ptr<Bullet> >& bullets,
-			const std::vector<std::shared_ptr<Explosion>>& explosions);
+	std::vector<Car*> cars;
+	virtual Vec2 getPosition() const override;
+	void update(long step, const std::vector<Bullet*>& bullets,
+			const std::vector<Explosion*>& explosions);
 	Train(int length, const Vec2& position, int speed);
 	virtual ~Train();
 };

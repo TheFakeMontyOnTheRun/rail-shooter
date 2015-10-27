@@ -5,7 +5,6 @@
  *      Author: monty
  */
 #include <vector>
-#include <memory>
 #include "Vec2.h"
 #include "Explosion.h"
 #include "Bullet.h"
@@ -14,7 +13,7 @@
 #include "Peasant.h"
 #include "Video.h"
 
-Peasant::Peasant(const std::shared_ptr<Character::Holder>& aPlace) :
+Peasant::Peasant(const Character::Holder& aPlace) :
 		Character(aPlace, Area(Vec2(0, 0), Vec2(25, 50))) {
 }
 
@@ -26,8 +25,8 @@ int Peasant::getResId() {
 }
 
 void Peasant::update(long step,
-		const std::vector<std::shared_ptr<Bullet> >& bullets,
-		const std::vector<std::shared_ptr<Explosion>>& explosions) {
+		const std::vector<Bullet*>& bullets,
+		const std::vector<Explosion*>& explosions) {
 }
 
 void Peasant::fire() {

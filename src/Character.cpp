@@ -5,16 +5,15 @@
  *      Author: monty
  */
 #include <vector>
-#include <memory>
 #include "Vec2.h"
 #include "Explosion.h"
 #include "Bullet.h"
 #include "Area.h"
 #include "Character.h"
 
-Character::Character(const std::shared_ptr<Character::Holder>& aPlace,
+Character::Character(const Character::Holder& aPlace,
 		const Area& aHitArea) :
-		place(aPlace), hitArea(aHitArea) {
+		place(&aPlace), hitArea(aHitArea) {
 }
 
 Character::~Character() {
@@ -22,8 +21,8 @@ Character::~Character() {
 }
 
 void Character::update(long ms,
-		const std::vector<std::shared_ptr<Bullet> >& bullets,
-		const std::vector<std::shared_ptr<Explosion>>& explosions) {
+		const std::vector<Bullet* >& bullets,
+		const std::vector<Explosion*>& explosions) {
 
 	if (health <= 0) {
 		return;
@@ -39,7 +38,7 @@ void Character::update(long ms,
 			bullet->hit();
 
 			const Vec2 pos = bullet->position;
-			auto explosion = std::make_shared < Explosion > (150, pos);
+			auto explosion = new Explosion(150, pos);
 			::explosions.push_back(explosion);
 
 			--health;

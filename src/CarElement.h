@@ -8,10 +8,10 @@ public:
 
 	class Holder {
 	public:
-		virtual Vec2 getPositionForCarElement() = 0;
+		virtual Vec2 getPositionForCarElement() const = 0;
 	};
 
-	std::shared_ptr<Holder> parent;
+	const Holder* parent{nullptr};
 	int hull;
 	int length;
 	Vec2 position { 0, 0 };
@@ -20,10 +20,10 @@ public:
 	virtual int getResId() = 0;
 	virtual void fire();
 	virtual void update(long step,
-			const std::vector<std::shared_ptr<Bullet> >& bullets,
-			const std::vector<std::shared_ptr<Explosion>>& explosions);
+			const std::vector<Bullet*>& bullets,
+			const std::vector<Explosion*>& explosions);
 
-	CarElement(const std::shared_ptr<CarElement::Holder>& parent, int hull, int length,
+	CarElement(const CarElement::Holder& parent, int hull, int length,
 			const Vec2& relativePosition, const Area& hitArea);
 			
 	virtual ~CarElement();

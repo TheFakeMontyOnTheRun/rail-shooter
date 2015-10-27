@@ -11,5 +11,5 @@ public:
 	Explosion(long timeToExpire, const Vec2& position);
 };
 //ugly hack
-extern std::vector<std::shared_ptr<Explosion> > explosions;
+extern std::vector<Explosion* > explosions;
 #endif

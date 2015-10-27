@@ -13,7 +13,7 @@
 const int HULL = 50;
 const int LENGTH = 30;
 
-CoveredZBorCar::CoveredZBorCar(const std::shared_ptr<Car::Holder>& aTrain,
+CoveredZBorCar::CoveredZBorCar(const Car::Holder& aTrain,
 		const Vec2& aPosition) :
 		Car(aTrain, HULL, LENGTH, aPosition) {
 }

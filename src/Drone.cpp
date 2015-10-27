@@ -4,7 +4,6 @@
  *  Created on: Oct 13, 2015
  *      Author: monty
  */
-#include <memory>
 #include <vector>
 #include "Vec2.h"
 #include "Explosion.h"
@@ -27,7 +26,7 @@ int Drone::getResId() {
 	return Image::DRONE;
 }
 
-Drone::Drone(const std::shared_ptr<Character::Holder>& aPlace) :
+Drone::Drone(const Character::Holder& aPlace) :
 		Character(aPlace, Area(Vec2(0, 0), Vec2(50, 60))) {
 }
 
@@ -35,8 +34,8 @@ Drone::~Drone() {
 }
 
 void Drone::update(long ms,
-		const std::vector<std::shared_ptr<Bullet> >& bullets,
-		const std::vector<std::shared_ptr<Explosion>>& explosions) {
+		const std::vector<Bullet*>& bullets,
+		const std::vector<Explosion*>& explosions) {
 	Character::update(ms, bullets, explosions);
 
 	if (health <= 0) {

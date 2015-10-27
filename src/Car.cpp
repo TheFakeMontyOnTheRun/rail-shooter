@@ -8,14 +8,14 @@
 #include "Character.h"
 #include "Car.h"
 
-Car::Car(const std::shared_ptr<Car::Holder>& aTrain, int aHull, int aLength,
+Car::Car(const Car::Holder& aTrain, int aHull, int aLength,
 		const Vec2& aRelativePosition) :
-		train(aTrain), hull(aHull), length(aLength), position(aRelativePosition) {
+		train(&aTrain), hull(aHull), length(aLength), position(aRelativePosition) {
 }
 
 void Car::update(long step,
-		const std::vector<std::shared_ptr<Bullet> >& bullets,
-		const std::vector<std::shared_ptr<Explosion>>& explosions) {
+		const std::vector<Bullet*>& bullets,
+		const std::vector<Explosion*>& explosions) {
 	for (auto &element : elements) {
 		if (element->hull > 0) {
 			element->update(step, bullets, explosions);
@@ -29,11 +29,11 @@ void Car::update(long step,
 	}
 }
 
-Vec2 Car::getPositionForCharacter() {
+Vec2 Car::getPositionForCharacter() const {
 	return getPosition();
 }
 
-Vec2 Car::getPositionForCarElement() {
+Vec2 Car::getPositionForCarElement() const {
 	return getPosition();
 }
 
@@ -51,7 +51,7 @@ void Car::fire() {
 	}
 }
 
-Vec2 Car::getPosition() {
+Vec2 Car::getPosition() const {
 	Vec2 toReturn = Vec2(position.x, position.y);
 
 	if (train != nullptr) {

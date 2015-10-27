@@ -14,8 +14,8 @@ Train::Train(int aLength, const Vec2& aRelativePosition, int aSpeed) :
 }
 
 void Train::update(long step,
-		const std::vector<std::shared_ptr<Bullet> >& bullets,
-		const std::vector<std::shared_ptr<Explosion>>& explosions) {
+		const std::vector<Bullet*>& bullets,
+		const std::vector<Explosion*>& explosions) {
 
 	position.x += speed;
 
@@ -24,7 +24,7 @@ void Train::update(long step,
 	}
 }
 
-Vec2 Train::getPosition() {
+Vec2 Train::getPosition() const {
 	return Vec2(position.x, position.y);
 }
 

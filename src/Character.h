@@ -13,10 +13,10 @@ public:
 
 	class Holder {
 	public:
-		virtual Vec2 getPositionForCharacter() = 0;
+		virtual Vec2 getPositionForCharacter() const = 0;
 	};
 
-	std::shared_ptr<Character::Holder> place;
+	const Character::Holder* place{nullptr};
 
 	enum class State {
 		AIMING, SHOOTING, WALKING_LEFT, WALKING_RIGHT
@@ -24,13 +24,13 @@ public:
 	Area hitArea { Vec2 { 0, 0 }, Vec2 { 0, 0 } };
 	virtual int getResId() = 0;
 	virtual void update(long step,
-			const std::vector<std::shared_ptr<Bullet> >& bullets,
-			const std::vector<std::shared_ptr<Explosion>>& explosions) = 0;
+			const std::vector<Bullet*>& bullets,
+			const std::vector<Explosion*>& explosions) = 0;
 	State currentState = { State::AIMING };
 	Vec2 position { 0, 0 };
 	int health { 25 };
 	int power { 10 };
-	Character(const std::shared_ptr<Holder>& place, const Area& hitArea);
+	Character(const Holder& place, const Area& hitArea);
 	virtual void fire();
 	virtual ~Character();
 };

@@ -3,7 +3,6 @@
 #include <sys/time.h>
 #include <vector>
 #include <algorithm>
-#include <memory>
 #include <iostream>
 #include "Vec2.h"
 #include "Explosion.h"
@@ -22,15 +21,13 @@
 
 HeroTrain heroTrain;
 VillainTrain villainTrain;
-std::vector<std::shared_ptr<Bullet>> bullets;
-std::vector<std::shared_ptr<Explosion>> explosions;
+std::vector<Bullet*> bullets;
+std::vector<Explosion*> explosions;
 int mapPos = 0;
 bool quit = false;
 
 void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
-	bullets.push_back(
-			std::make_shared < Bullet
-					> (Vec2(xPos, yPos), Vec2(xSpeed, ySpeed)));
+	bullets.push_back( new Bullet(Vec2(xPos, yPos), Vec2(xSpeed, ySpeed)));
 }
 
 void shoot() {
@@ -40,14 +37,16 @@ void shoot() {
 	}
 }
 
-void destroyBullet(const std::shared_ptr<Bullet> bullet) {
+void destroyBullet(const Bullet* bullet) {
 	bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet),
 			bullets.end());
+			
+	delete bullet;
 }
 
 void updateGame(long sleptFor) {
 
-	std::vector<std::shared_ptr<Bullet>> toDestroy;
+	std::vector<Bullet*> toDestroy;
 
 	for (auto& bullet : bullets) {
 		bullet->update(sleptFor);
