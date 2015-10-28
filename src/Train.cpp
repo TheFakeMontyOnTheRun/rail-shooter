@@ -29,5 +29,9 @@ Vec2 Train::getPosition() const {
 }
 
 Train::~Train() {
+	for ( auto& car : cars ) {
+		delete car;
+	}	
 	
+	cars.clear();
 }

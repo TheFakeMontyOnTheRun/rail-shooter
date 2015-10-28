@@ -221,5 +221,18 @@ void handleEvents() {
 }
 
 void shutdownGraphics() {
+	
+	SDL_FreeSurface( video );
+	SDL_FreeSurface( shot );
+	SDL_FreeSurface( player );
+	SDL_FreeSurface( zbor1 );
+	SDL_FreeSurface( zbor2 );
+	SDL_FreeSurface( bg1 );
+	SDL_FreeSurface( bg2 );
+	SDL_FreeSurface( turret );
+	SDL_FreeSurface( hero );
+	SDL_FreeSurface( drone );
+	SDL_FreeSurface( hit );
+
 	SDL_Quit();
 }

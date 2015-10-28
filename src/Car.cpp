@@ -62,5 +62,14 @@ Vec2 Car::getPosition() const {
 }
 
 Car::~Car() {
+	for ( auto& element : elements ) {
+		delete element;
+	}
 	
+	for ( auto& character : occupants ) {
+		delete character;
+	}
+	
+	elements.clear();
+	occupants.clear();
 }

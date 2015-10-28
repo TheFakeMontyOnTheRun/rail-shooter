@@ -44,9 +44,17 @@ void destroyBullet(const Bullet* bullet) {
 	delete bullet;
 }
 
+void destroyExplosion( const Explosion* explosion ) {
+	explosions.erase(std::remove(explosions.begin(), explosions.end(), explosion),
+			explosions.end());
+			
+	delete explosion;	
+}
+
 void updateGame(long sleptFor) {
 
 	std::vector<Bullet*> toDestroy;
+	std::vector<Explosion*> expiredExplosion;
 
 	for (auto& bullet : bullets) {
 		bullet->update(sleptFor);
@@ -61,17 +69,28 @@ void updateGame(long sleptFor) {
 			continue;
 		}
 	}
-
+	
 	for (auto& explosion : explosions) {
 		explosion->update(sleptFor);
 	}
-
-	heroTrain.basicTrainProps.update(sleptFor, bullets, explosions);
-	villainTrain.basicTrainProps.update(sleptFor, bullets, explosions);
+	
+	for ( auto& explosion : explosions ) {
+		if ( !explosion->isValid() ) {
+			expiredExplosion.push_back( explosion );
+		}
+	}
 
 	for (auto &bullet : toDestroy) {
 		destroyBullet(bullet);
 	}
+
+	for ( auto& explosion : expiredExplosion ) {
+		destroyExplosion( explosion );	
+	}
+	
+	heroTrain.basicTrainProps.update(sleptFor, bullets, explosions);
+	villainTrain.basicTrainProps.update(sleptFor, bullets, explosions);
+
 }
 
 int main(int argc, char **argv) {
@@ -114,6 +133,16 @@ int main(int argc, char **argv) {
 
 		updateGame(delta);
 	}
+	
+	for ( auto& bullet : bullets ) {
+		delete bullet;
+	}
+	
+	for ( auto& explosion : explosions ) {
+		delete explosion;
+	}
+	
+	
 
 	shutdownGraphics();
 	return 0;
