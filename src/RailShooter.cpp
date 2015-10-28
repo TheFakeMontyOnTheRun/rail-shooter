@@ -3,7 +3,11 @@
 #include <sys/time.h>
 #include <vector>
 #include <algorithm>
-#include <memory>
+#include <iostream>
+#include "Vec2.h"
+#include "Explosion.h"
+#include "Bullet.h"
+#include "Area.h"
 #include "GroundType.h"
 #include "CarElement.h"
 #include "Character.h"
@@ -11,54 +15,49 @@
 #include "Train.h"
 #include "HeroTrain.h"
 #include "VillainTrain.h"
-#include "Vec2.h"
-#include "Bullet.h"
-#include "RailShooter.h"
 #include "Background.h"
 #include "Video.h"
+#include "RailShooter.h"
 
 HeroTrain heroTrain;
 VillainTrain villainTrain;
-std::vector<std::shared_ptr<Bullet>> bullets;
-
+std::vector<Bullet*> bullets;
+std::vector<Explosion*> explosions;
 int mapPos = 0;
 bool quit = false;
 
 void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
-	bullets.push_back(
-			std::make_shared < Bullet
-					> (Vec2(xPos, yPos), Vec2(xSpeed, ySpeed)));
+	bullets.push_back( new Bullet(Vec2(xPos, yPos), Vec2(xSpeed, ySpeed)));
 }
 
 void shoot() {
 	for (auto& car : heroTrain.basicTrainProps.cars) {
-		fireBullet(heroTrain.basicTrainProps.position + car->position,
+		fireBullet(heroTrain.basicTrainProps.position.x + car->position.x,
 				PLAYER_RAIL_Y - 5, 1 + heroTrain.basicTrainProps.speed, -7);
 	}
 }
 
-bool isHit(int pos, int line, std::shared_ptr<Car> car, const std::shared_ptr<Bullet> bullet) {
-
-	if (bullet->position.y > line && bullet->position.y < (line + 15)
-			&& bullet->position.x > (car->position + pos)
-			&& bullet->position.x < (car->position + car->length + pos)) {
-		return true;
-	}
-
-	return false;
-}
-
-void destroyBullet(const std::shared_ptr<Bullet> bullet) {
+void destroyBullet(const Bullet* bullet) {
 	bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet),
 			bullets.end());
+			
+	delete bullet;
 }
 
-void updateGame() {
+void destroyExplosion( const Explosion* explosion ) {
+	explosions.erase(std::remove(explosions.begin(), explosions.end(), explosion),
+			explosions.end());
+			
+	delete explosion;	
+}
 
-	std::vector<std::shared_ptr<Bullet>> toDestroy;
+void updateGame(long sleptFor) {
+
+	std::vector<Bullet*> toDestroy;
+	std::vector<Explosion*> expiredExplosion;
 
 	for (auto& bullet : bullets) {
-		bullet->update(100);
+		bullet->update(sleptFor);
 
 		if (bullet->position.y < 0) {
 			toDestroy.push_back(bullet);
@@ -69,46 +68,29 @@ void updateGame() {
 			toDestroy.push_back(bullet);
 			continue;
 		}
-
-		for (auto& car : villainTrain.basicTrainProps.cars) {
-
-			if (car->hull <= 0) {
-				continue;
-			}
-
-			if (isHit(villainTrain.basicTrainProps.position, ENEMY_RAIL_Y, car,
-					bullet)) {
-				car->hit = true;
-				car->hull -= 1;
-				toDestroy.push_back(bullet);
-				fireBullet(
-						villainTrain.basicTrainProps.position + car->position,
-						ENEMY_RAIL_Y + 5, -1, 1);
-				continue;
-			}
-		}
-
-		for (auto& car : heroTrain.basicTrainProps.cars) {
-
-			if (car->hull <= 0) {
-				continue;
-			}
-
-			if (isHit(heroTrain.basicTrainProps.position, PLAYER_RAIL_Y, car,
-					bullet)) {
-				car->hit = true;
-				car->hull -= 1;
-				toDestroy.push_back(bullet);
-			}
+	}
+	
+	for (auto& explosion : explosions) {
+		explosion->update(sleptFor);
+	}
+	
+	for ( auto& explosion : explosions ) {
+		if ( !explosion->isValid() ) {
+			expiredExplosion.push_back( explosion );
 		}
 	}
-
-	heroTrain.basicTrainProps.update(100);
-	villainTrain.basicTrainProps.update(100);
 
 	for (auto &bullet : toDestroy) {
 		destroyBullet(bullet);
 	}
+
+	for ( auto& explosion : expiredExplosion ) {
+		destroyExplosion( explosion );	
+	}
+	
+	heroTrain.basicTrainProps.update(sleptFor, bullets, explosions);
+	villainTrain.basicTrainProps.update(sleptFor, bullets, explosions);
+
 }
 
 int main(int argc, char **argv) {
@@ -118,10 +100,10 @@ int main(int argc, char **argv) {
 
 	quit = false;
 
-	struct timeval timeBefore;
-	struct timeval timeAfter;
-	int slept = 0;
+	timeval timeBefore;
+	timeval timeAfter;
 	long delta;
+	long sleptFor = 0;
 
 	while (!quit) {
 		gettimeofday(&timeBefore, nullptr);
@@ -130,24 +112,37 @@ int main(int argc, char **argv) {
 
 		mapPos += 8;
 		updateTerrain(mapPos);
-		updateGame();
 
 		if (mapPos > TILES_X) {
 			refreshGraphics();
 		}
 
 		gettimeofday(&timeAfter, nullptr);
-		delta = (timeAfter.tv_usec - timeBefore.tv_usec) / 100;
+		delta = (timeAfter.tv_usec - timeBefore.tv_usec) / 1000;
 
 		if (delta < 0) {
 			delta = -delta;
 		}
 
-		if (delta < 50) {
-			sleepForMS(50 - delta);
-			slept++;
+		if (delta < 20) {
+			sleptFor = 20 - delta;
+			sleepForMS(sleptFor);
+		} else {
+			sleptFor = 0;
 		}
+
+		updateGame(delta);
 	}
+	
+	for ( auto& bullet : bullets ) {
+		delete bullet;
+	}
+	
+	for ( auto& explosion : explosions ) {
+		delete explosion;
+	}
+	
+	
 
 	shutdownGraphics();
 	return 0;

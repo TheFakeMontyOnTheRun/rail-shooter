@@ -8,15 +8,15 @@
 #ifndef SRC_DRONE_H_
 #define SRC_DRONE_H_
 
-#include "Character.h"
-
 class Drone: public Character {
 public:
-	Drone();
+	Drone(const Character::Holder& parent);
 	virtual ~Drone();
 	virtual int getResId() override;
-	virtual void update( long ms ) override;
-	virtual void shoot() override;
+	virtual void update(long step,
+			const std::vector<Bullet* >& bullets,
+			const std::vector<Explosion*>& explosions) override;
+	virtual void fire() override;
 };
 
 #endif /* SRC_DRONE_H_ */

@@ -12,11 +12,13 @@
 
 class Peasant: public Character {
 public:
-	Peasant();
+	Peasant(const Character::Holder& place);
 	virtual ~Peasant();
 	virtual int getResId();
-	virtual void update( long ms ) override;
-	virtual void shoot() override;
+	virtual void update(long step,
+			const std::vector<Bullet*>& bullets,
+			const std::vector<Explosion*>& explosions) override;
+	virtual void fire() override;
 };
 
 #endif /* SRC_PEASANT_H_ */

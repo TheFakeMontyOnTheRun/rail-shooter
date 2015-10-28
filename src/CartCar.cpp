@@ -1,5 +1,9 @@
 #include <vector>
 #include <memory>
+#include "Vec2.h"
+#include "Explosion.h"
+#include "Bullet.h"
+#include "Area.h"
 #include "CarElement.h"
 #include "Character.h"
 #include "Peasant.h"
@@ -10,13 +14,17 @@
 const int HULL = 10;
 const int LENGTH = 15;
 
-CartCar::CartCar( int aPosition ):
-  Car( HULL, LENGTH, aPosition ) {
+CartCar::CartCar(const Car::Holder& train, const Vec2&	 aPosition) :
+		Car(train, HULL, LENGTH, aPosition) {
 
-	auto sergei = std::make_shared<Peasant>();
-	occupants.push_back( sergei );
+	auto sergei = new Peasant(*this);
+	occupants.push_back(sergei);
 }
 
 int CartCar::getResId() {
-  return Image::PLAYER;
+	return Image::PLAYER;
+}
+
+CartCar::~CartCar() {
+	
 }
