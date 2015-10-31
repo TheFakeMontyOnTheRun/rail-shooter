@@ -105,6 +105,39 @@ void updateGame(long sleptFor) {
 	cameraSpeed += cameraAcceleration;
 }
 
+bool isTrainActive( const Train& train ) {
+	
+	for ( auto& car : train.cars ) {
+		for ( auto& element : car->elements ) {
+			if ( element->hull > 0 ) {
+				return true;
+			}
+		}
+		
+		for ( auto& character : car->occupants ) {
+			if ( character->health > 0 ) {
+				return true;
+			}
+		}
+	}
+	
+	return false;
+}
+
+bool checkEndGameConditions() {
+	if ( !isTrainActive( villainTrain.basicTrainProps ) ) {
+		std::cout << "The enemy was defeated!" << std::endl;
+		return true;
+	}
+	
+	if ( !isTrainActive( heroTrain.basicTrainProps ) ) {
+		std:: cout << "GAME OVER!" << std::endl;
+		return true;
+	}
+
+	return false;
+}
+
 int main(int argc, char **argv) {
 
 	initGraphics();
@@ -144,6 +177,7 @@ int main(int argc, char **argv) {
 		}
 
 		updateGame(delta);
+		quit = quit || checkEndGameConditions();
 	}
 	
 	for ( auto& bullet : bullets ) {
