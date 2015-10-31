@@ -27,6 +27,8 @@ int Peasant::getResId() {
 void Peasant::update(long step,
 		const std::vector<Bullet*>& bullets,
 		const std::vector<Explosion*>& explosions) {
+			
+	Character::update( step, bullets, explosions );
 }
 
 void Peasant::fire() {
