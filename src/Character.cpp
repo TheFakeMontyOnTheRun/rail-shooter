@@ -13,7 +13,7 @@
 
 Character::Character(const Character::Holder& aPlace,
 		const Area& aHitArea) :
-		place(&aPlace), hitArea(aHitArea) {
+		place(&aPlace), hitArea(aHitArea), currentState(Character::State::AIMING) {
 }
 
 Character::~Character() {
