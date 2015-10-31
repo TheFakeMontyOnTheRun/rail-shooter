@@ -25,6 +25,8 @@ std::vector<Bullet*> bullets;
 std::vector<Explosion*> explosions;
 int mapPos = 0;
 bool quit = false;
+int cameraSpeed = 8;
+int cameraAcceleration = 0;
 
 void fireBullet(int xPos, int yPos, int xSpeed, int ySpeed) {
 	bullets.push_back( new Bullet(Vec2(xPos, yPos), Vec2(xSpeed, ySpeed)));
@@ -91,6 +93,16 @@ void updateGame(long sleptFor) {
 	heroTrain.basicTrainProps.update(sleptFor, bullets, explosions);
 	villainTrain.basicTrainProps.update(sleptFor, bullets, explosions);
 
+
+	if ( cameraSpeed > heroTrain.basicTrainProps.speed ) {
+		cameraAcceleration = -1;
+	}
+	
+	if ( cameraSpeed < heroTrain.basicTrainProps.speed ) {
+		cameraAcceleration = 1;
+	}
+	
+	cameraSpeed += cameraAcceleration;
 }
 
 int main(int argc, char **argv) {
@@ -102,7 +114,6 @@ int main(int argc, char **argv) {
 
 	timeval timeBefore;
 	timeval timeAfter;
-	long delta;
 	long sleptFor = 0;
 
 	while (!quit) {
@@ -110,7 +121,8 @@ int main(int argc, char **argv) {
 
 		handleEvents();
 
-		mapPos += 8;
+		mapPos += cameraSpeed;
+		
 		updateTerrain(mapPos);
 
 		if (mapPos > TILES_X) {
@@ -118,7 +130,7 @@ int main(int argc, char **argv) {
 		}
 
 		gettimeofday(&timeAfter, nullptr);
-		delta = (timeAfter.tv_usec - timeBefore.tv_usec) / 1000;
+		long delta = (timeAfter.tv_usec - timeBefore.tv_usec) / 1000;
 
 		if (delta < 0) {
 			delta = -delta;
