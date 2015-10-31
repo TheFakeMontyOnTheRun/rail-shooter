@@ -92,17 +92,12 @@ void drawBackground() {
 	}
 }
 
-void clearGraphics() {
-	SDL_FillRect(video, nullptr, 0);
-}
-
 void drawTrain(const Train &train, int pos, int line) {
 
 	SDL_Rect tile;
-	SDL_Surface *asset;
-	for (auto& car : train.cars) {
 
-		asset = res[car->getResId()];
+	for (auto& car : train.cars) {
+		SDL_Surface *asset = res[car->getResId()];
 
 		tile.x = pos + car->position.x;
 		tile.w = car->length;
@@ -139,6 +134,37 @@ void drawTrain(const Train &train, int pos, int line) {
 		}
 	}
 }
+
+void drawMiniMap() {
+	
+	SDL_Rect tile;
+	int basePos = villainTrain.basicTrainProps.position.x;
+	int offsetPos = heroTrain.basicTrainProps.position.x;
+	int acc = 0;
+	for ( auto& car : villainTrain.basicTrainProps.cars ) {
+		tile.x = ( XRES / 2 ) +  ( acc ) + ( basePos - offsetPos ) / 100;
+		tile.w = car->length;
+		tile.y = 5;
+		tile.h = 10;
+		acc += car->length + 5;
+
+		bool hasElementsToDestroy = false;
+		
+		for ( auto& carElement : car->elements ) {
+			if ( carElement->hull > 0 ) {
+				hasElementsToDestroy = true;
+			}
+		}
+		
+		for ( auto& passanger : car->occupants ) {
+			if ( passanger->health > 0 ) {
+				hasElementsToDestroy = true;
+			}
+		}
+
+		SDL_FillRect( video, &tile, hasElementsToDestroy ? 0xFF00FF00 : 0xFF0000FF );
+	}
+} 
 
 void refreshGraphics() {
 
@@ -179,6 +205,8 @@ void refreshGraphics() {
 
 		SDL_BlitSurface(hit, nullptr, video, &tile);
 	}
+	
+	drawMiniMap();
 
 	SDL_UpdateRect(video, 0, 0, 0, 0);
 }
